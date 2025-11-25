@@ -1,5 +1,5 @@
     <!DOCTYPE html>
-    <html lang="en">
+  https://amarkantheddym.github.io/AR-Trend-Hub/  <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,21 +60,21 @@
 
             <!-- Today's Overview Section -->
             <section class="mb-10">
-                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Today's Commodity Prices in India (â‚¹/Gram)</h2>
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Today's Commodity Prices in India (₹/Gram)</h2>
                 <div id="overview-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     
                     <!-- Card 1: 24K Gold -->
                     <div id="card-24k" class="price-card bg-white p-6 rounded-xl border-t-4 border-yellow-500">
                         <h3 class="text-lg font-semibold text-gray-500 mb-2">24 Karat Gold (99.9% Pure)</h3>
                         <div class="flex items-end justify-between">
-                            <p class="text-3xl font-bold text-gray-900">â‚¹<span id="price-24k-1g">0.00</span></p>
+                            <p class="text-3xl font-bold text-gray-900">₹<span id="price-24k-1g">0.00</span></p>
                             <div class="text-right">
                                 <span id="change-24k" class="text-sm font-medium"></span>
                                 <span class="text-xs text-gray-500 block">per gram</span>
                             </div>
                         </div>
                         <div class="mt-4 text-sm text-gray-500">
-                            10 Gram: â‚¹<span id="price-24k-10g">0.00</span>
+                            10 Gram: ₹<span id="price-24k-10g">0.00</span>
                         </div>
                     </div>
 
@@ -82,14 +82,14 @@
                     <div id="card-22k" class="price-card bg-white p-6 rounded-xl border-t-4 border-amber-500">
                         <h3 class="text-lg font-semibold text-gray-500 mb-2">22 Karat Gold (Jewellery)</h3>
                         <div class="flex items-end justify-between">
-                            <p class="text-3xl font-bold text-gray-900">â‚¹<span id="price-22k-1g">0.00</span></p>
+                            <p class="text-3xl font-bold text-gray-900">₹<span id="price-22k-1g">0.00</span></p>
                             <div class="text-right">
                                 <span id="change-22k" class="text-sm font-medium"></span>
                                 <span class="text-xs text-gray-500 block">per gram</span>
                             </div>
                         </div>
                         <div class="mt-4 text-sm text-gray-500">
-                            10 Gram: â‚¹<span id="price-22k-10g">0.00</span>
+                            10 Gram: ₹<span id="price-22k-10g">0.00</span>
                         </div>
                     </div>
 
@@ -97,14 +97,14 @@
                     <div id="card-silver" class="price-card bg-white p-6 rounded-xl border-t-4 border-gray-400">
                         <h3 class="text-lg font-semibold text-gray-500 mb-2">Silver Price</h3>
                         <div class="flex items-end justify-between">
-                            <p class="text-3xl font-bold text-gray-900">â‚¹<span id="price-silver-1g">0.00</span></p>
+                            <p class="text-3xl font-bold text-gray-900">₹<span id="price-silver-1g">0.00</span></p>
                             <div class="text-right">
                                 <span id="change-silver" class="text-sm font-medium"></span>
                                 <span class="text-xs text-gray-500 block">per gram</span>
                             </div>
                         </div>
                         <div class="mt-4 text-sm text-gray-500">
-                            1 Kg: â‚¹<span id="price-silver-1kg">0.00</span>
+                            1 Kg: ₹<span id="price-silver-1kg">0.00</span>
                         </div>
                     </div>
 
@@ -147,7 +147,7 @@
                 <!-- Result Display -->
                 <div id="calculation-result" class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 text-gray-800 rounded-lg">
                     <p class="text-sm font-medium">Estimated Price:</p>
-                    <p class="text-3xl font-extrabold text-indigo-700 mt-1">â‚¹ <span id="final-price">0.00</span></p>
+                    <p class="text-3xl font-extrabold text-indigo-700 mt-1">₹ <span id="final-price">0.00</span></p>
                     <p class="text-xs text-gray-500 mt-2">Note: Calculation is based on the live indicative rate displayed above, excluding making charges and taxes (GST/TCS).</p>
                 </div>
             </section>
@@ -171,9 +171,9 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 z-10 bg-gray-50">City</th>
-                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">24K (â‚¹)</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">24K (₹)</th>
                                 <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Change</th>
-                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">22K (â‚¹)</th>
+                                <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">22K (₹)</th>
                                 <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Change</th>
                             </tr>
                         </thead>
@@ -230,7 +230,7 @@
             
             const formatChange = (change) => {
                 const isPositive = change >= 0;
-                const sign = isPositive ? 'â–²' : 'â–¼';
+                const sign = isPositive ? '▲' : '▼';
                 const colorClass = isPositive ? 'up-trend' : 'down-trend';
                 return `<span class="${colorClass}">${sign} ${Math.abs(change).toFixed(2)}</span>`;
             };
@@ -267,7 +267,7 @@
             ];
 
             const MOCK_YOUTUBE_VIDEOS = [
-                { title: "Gold Price Forecast: Will Yellow Metal hit â‚¹70,000 by Diwali?", channel: "AR TREND HUB", views: "1.2M" },
+                { title: "Gold Price Forecast: Will Yellow Metal hit ₹70,000 by Diwali?", channel: "AR TREND HUB", views: "1.2M" },
                 { title: "Silver Price Analysis: Is the White Metal a better Buy than Gold Today?", channel: "AR TREND HUB", views: "450K" },
                 { title: "How to Invest in Digital Gold vs SGBs (Sovereign Gold Bonds)", channel: "AR TREND HUB", views: "88K" },
                 { title: "Global Market Impact on Indian Gold Rates (US Fed Decision Explained)", channel: "AR TREND HUB", views: "600K" },
@@ -395,7 +395,7 @@
                     data: {
                         labels: MOCK_HISTORICAL_DATA.labels,
                         datasets: [{
-                            label: '24K Gold Rate (â‚¹/10g)',
+                            label: '24K Gold Rate (₹/10g)',
                             data: MOCK_HISTORICAL_DATA.prices,
                             borderColor: 'rgb(202, 138, 4)', // Amber-700
                             backgroundColor: 'rgba(251, 191, 36, 0.2)', // Amber-400 transparent fill
@@ -416,7 +416,7 @@
                             y: {
                                 title: {
                                     display: true,
-                                    text: 'Price in INR (â‚¹)',
+                                    text: 'Price in INR (₹)',
                                     font: { size: 14 }
                                 },
                                 beginAtZero: false,
@@ -461,7 +461,7 @@
                             <div class="p-4">
                                 <h4 class="text-base font-semibold text-gray-900 mb-1 leading-snug">${video.title}</h4>
                                 <p class="text-sm text-gray-600">${video.channel}</p>
-                                <p class="text-xs text-gray-400 mt-1">${video.views} Views â€¢ 2 Days Ago</p>
+                                <p class="text-xs text-gray-400 mt-1">${video.views} Views • 2 Days Ago</p>
                             </div>
                         </a>
                     `;
