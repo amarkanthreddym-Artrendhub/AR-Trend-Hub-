@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AR TREND HUB | Commodity & Analysis</title>
@@ -349,4 +349,213 @@
                 const priceSilver_1g_change = (priceSilver_1g_raw - MOCK_BASE_PRICE_SILVER);
 
                 document.getElementById('price-silver-1g').textContent = formatCurrency(priceSilver_1g_raw);
-              
+                document.getElementById('price-silver-1kg').textContent = formatCurrency(priceSilver_1kg_raw);
+                document.getElementById('change-silver').innerHTML = formatChange(priceSilver_1g_change);
+            }
+
+            /**
+             * Renders the city-wise prices table.
+             */
+            function renderCityPrices() {
+                const tableBody = document.getElementById('city-prices-body');
+                tableBody.innerHTML = '';
+
+                CITY_PRICES.forEach(data => {
+                    // Calculate city-specific prices based on base gold price and city factor
+                    const city_24k_10g = (MOCK_BASE_PRICE_24K * data.base) * (1 + data.change / 100);
+                    const city_22k_10g = (MOCK_BASE_PRICE_22K * data.base) * (1 + data.change / 100);
+
+                    // Calculate the daily change value (difference between current city price and city's base price)
+                    const change24k = city_24k_10g - (MOCK_BASE_PRICE_24K * data.base);
+                    const change22k = city_22k_10g - (MOCK_BASE_PRICE_22K * data.base);
+                    
+                    const row = `
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-indigo-700 sticky left-0 bg-white">${data.city}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 text-right font-medium">${formatCurrency(city_24k_10g)}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-right">${formatChange(change24k)}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 text-right font-medium">${formatCurrency(city_22k_10g)}</td>
+                            <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-right">${formatChange(change22k)}</td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                });
+            }
+
+            /**
+             * Renders the historical price chart using Chart.js.
+             */
+            function renderHistoricalChart() {
+                generateMockHistoricalData(); // Generate data first
+
+                const ctx = document.getElementById('historicalChart').getContext('2d');
+                
+                const chartConfig = {
+                    type: 'line',
+                    data: {
+                        labels: MOCK_HISTORICAL_DATA.labels,
+                        datasets: [{
+                            label: '24K Gold Rate (₹/10g)',
+                            data: MOCK_HISTORICAL_DATA.prices,
+                            borderColor: 'rgb(202, 138, 4)', // Amber-700
+                            backgroundColor: 'rgba(251, 191, 36, 0.2)', // Amber-400 transparent fill
+                            tension: 0.2, // Smooth line
+                            pointRadius: 2,
+                            pointBackgroundColor: 'rgb(202, 138, 4)',
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false, // Important for responsive canvas container
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Price in INR (₹)',
+                                    font: { size: 14 }
+                                },
+                                beginAtZero: false,
+                                grid: { color: 'rgba(0,0,0,0.05)' }
+                            },
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Last 30 Days',
+                                    font: { size: 14 }
+                                },
+                                grid: { display: false }
+                            }
+                        }
+                    }
+                };
+
+                new Chart(ctx, chartConfig);
+            }
+
+            /**
+             * Renders the mock YouTube updates section.
+             */
+            function renderYoutubeUpdates() {
+                const ytGrid = document.getElementById('youtube-mock-grid');
+                ytGrid.innerHTML = '';
+
+                MOCK_YOUTUBE_VIDEOS.forEach((video) => {
+                    const placeholderText = encodeURIComponent(video.title);
+                    const thumbnailUrl = `https://placehold.co/400x225/A020F0/ffffff?text=${placeholderText.substring(0, 30)}...`;
+
+                    const videoHtml = `
+                        <a href="#" class="yt-mock-item bg-gray-50 rounded-xl overflow-hidden cursor-pointer transition duration-300 ease-in-out border border-gray-200">
+                            <!-- Mock Thumbnail -->
+                            <div class="relative w-full h-40 bg-gray-300 flex items-center justify-center overflow-hidden">
+                                <img src="${thumbnailUrl}" onerror="this.src='https://placehold.co/400x225/111827/9ca3af?text=Video+Thumbnail';" alt="${video.title}" class="object-cover w-full h-full">
+                                <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+                                    <svg class="w-12 h-12 text-white opacity-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                                </div>
+                            </div>
+                            
+                            <div class="p-4">
+                                <h4 class="text-base font-semibold text-gray-900 mb-1 leading-snug">${video.title}</h4>
+                                <p class="text-sm text-gray-600">${video.channel}</p>
+                                <p class="text-xs text-gray-400 mt-1">${video.views} Views • 2 Days Ago</p>
+                            </div>
+                        </a>
+                    `;
+                    ytGrid.insertAdjacentHTML('beforeend', videoHtml);
+                });
+            }
+            
+            /**
+             * Calculates the estimated price based on user inputs.
+             */
+            function calculatePrice() {
+                const weightInput = document.getElementById('weight-input');
+                const caratSelect = document.getElementById('carat-select');
+                const resultElement = document.getElementById('final-price');
+                
+                const weight = parseFloat(weightInput.value);
+                const carat = caratSelect.value;
+
+                // Basic input validation
+                if (isNaN(weight) || weight <= 0) {
+                    resultElement.textContent = 'Invalid Weight';
+                    resultElement.classList.add('text-red-600');
+                    return;
+                }
+                
+                resultElement.classList.remove('text-red-600');
+
+                let ratePerGram = 0;
+
+                if (carat === '24') {
+                    ratePerGram = currentRates['24k_1g'];
+                } else if (carat === '22') {
+                    ratePerGram = currentRates['22k_1g'];
+                } else if (carat === '18') {
+                    ratePerGram = currentRates['18k_1g'];
+                } else if (carat === '14') {
+                    ratePerGram = currentRates['14k_1g'];
+                } else {
+                    ratePerGram = currentRates['24k_1g'] * (parseFloat(carat) / 24); // Fallback generic calculation
+                }
+
+                if (ratePerGram === 0) {
+                    resultElement.textContent = 'Data Error';
+                    resultElement.classList.add('text-red-600');
+                    console.error("Rate per gram is zero. Check currentRates object.");
+                    return;
+                }
+
+                const totalPrice = weight * ratePerGram;
+                
+                resultElement.textContent = formatCurrency(Math.round(totalPrice));
+            }
+
+
+            /**
+             * Updates the time display.
+             */
+            function updateTime() {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-IN', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                }) + ' IST';
+                const dateString = now.toLocaleDateString('en-IN', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                document.getElementById('current-time').textContent = `${dateString} | ${timeString}`;
+            }
+
+            // --- Initialization ---
+            window.onload = function() {
+                renderOverview();
+                renderCityPrices();
+                renderHistoricalChart();
+                renderYoutubeUpdates();
+
+                // Initial time update and set interval for real-time clock
+                updateTime();
+                setInterval(updateTime, 1000);
+                
+                // Calculate default price on load
+                calculatePrice();
+
+                // Attach event listeners to inputs so calculation runs automatically
+                document.getElementById('weight-input').addEventListener('input', calculatePrice);
+                document.getElementById('carat-select').addEventListener('change', calculatePrice);
+            };
+        </script>
+
+    </body>
+    </html>
+    
+
