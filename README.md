@@ -1,6 +1,6 @@
-    <!DOCTYPE html>
-  https://amarkantheddym.github.io/AR-Trend-Hub/  <html lang="en">
-      <head>
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AR TREND HUB | Commodity & Analysis</title>
@@ -558,4 +558,4 @@
     </body>
     </html>
     
-
+Coming like this?
