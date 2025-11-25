@@ -1,6 +1,6 @@
     <!DOCTYPE html>
     <html lang="en">
-     <head> 
+    <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AR TREND HUB | Commodity & Analysis</title>
@@ -8,7 +8,7 @@
         <!-- Chart.js CDN for historical trend visualization -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
         <style>
-          @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
             body {
                 font-family: 'Inter', sans-serif;
                 background-color: #f7f9fc; /* Light background */
