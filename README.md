@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR TREND HUB | Commodity & Analysis</title>
+    <title>AR TREND HUB | Comprehensive Indian Portal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js CDN for historical trend visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
@@ -11,58 +11,35 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f7f9fc; /* Light background */
+            background-color: #f7f9fc;
         }
-        .price-card {
+        /* Custom styles for the hub design */
+        .price-card, .tab-content-card {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
             transition: transform 0.3s ease;
         }
-        .price-card:hover {
-            transform: translateY(-2px);
-        }
-        .up-trend {
-            color: #059669; /* Emerald Green */
-        }
-        .down-trend {
-            color: #dc2626; /* Red */
-        }
-        .yt-mock-item:hover {
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-        }
-        /* Style for the responsive table container */
-        .table-container {
-            max-width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-        /* Style for calculator result display */
-        #calculation-result {
-            min-height: 80px; /* Ensure space for results */
-        }
-        /* Custom style for the logo */
-        .header-logo {
-            height: 40px; /* Adjust height for mobile and desktop view */
-            width: auto;
-        }
-        .job-card {
-            transition: background-color 0.2s;
-        }
-        .job-card:hover {
-            background-color: #f0f4f8;
+        .price-card:hover { transform: translateY(-2px); }
+        .up-trend { color: #059669; }
+        .down-trend { color: #dc2626; }
+        .table-container { max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        #calculation-result { min-height: 80px; }
+        .header-logo { height: 40px; width: auto; }
+        
+        /* Style for the active tab */
+        .tab-button.active {
+            border-bottom: 3px solid #f59e0b; /* Amber-500 */
+            color: #1f2937; /* Dark text */
+            font-weight: 600;
+            background-color: #f3f4f6;
         }
     </style>
 </head>
 <body>
     <!-- Header and Main Title -->
-    <header class="bg-indigo-700 text-white p-4 sm:p-6 shadow-lg">
+    <header class="bg-indigo-700 text-white p-4 sm:p-6 shadow-xl">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <!-- LOGO INTEGRATION HERE -->
             <div class="flex items-center">
-                <!-- 
-                    *** ACTION REQUIRED: 
-                    1. Upload your logo (1000327850.jpg) to your GitHub repo, preferably at 'assets/logo.png'.
-                    2. Verify and update the 'src' attribute below with the correct path.
-                -->
+                <!-- LOGO INTEGRATION (Remember to upload the image!) -->
                 <img src="assets/logo.png" 
                      onerror="this.onerror=null; this.src='https://placehold.co/180x40/4f46e5/ffffff?text=AR+TREND+HUB';"
                      alt="AR TREND HUB Logo" 
@@ -71,233 +48,195 @@
                     <span class="text-yellow-400">AR TREND</span> HUB
                 </h1>
             </div>
-            <!-- END LOGO INTEGRATION -->
             <div id="last-updated" class="text-sm mt-2 sm:mt-0 opacity-80">
                 Last Updated: <span id="current-time"></span>
             </div>
         </div>
     </header>
 
-    <!-- Main Content Grid -->
+    <!-- Navigation Tabs -->
+    <nav class="sticky top-0 z-20 bg-white shadow-md">
+        <div class="max-w-7xl mx-auto flex overflow-x-auto">
+            <button class="tab-button active p-3 sm:px-6 flex-shrink-0 text-sm sm:text-base text-gray-700 border-b-2 border-transparent hover:bg-gray-100" onclick="showTab('commodities', this)">
+                <span class="hidden sm:inline">💰</span> Commodities & Gold
+            </button>
+            <button class="tab-button p-3 sm:px-6 flex-shrink-0 text-sm sm:text-base text-gray-700 border-b-2 border-transparent hover:bg-gray-100" onclick="showTab('stock-market', this)">
+                <span class="hidden sm:inline">📈</span> Stock Market
+            </button>
+            <button class="tab-button p-3 sm:px-6 flex-shrink-0 text-sm sm:text-base text-gray-700 border-b-2 border-transparent hover:bg-gray-100" onclick="showTab('job-alerts', this)">
+                <span class="hidden sm:inline">💼</span> Job Alerts
+            </button>
+            <button class="tab-button p-3 sm:px-6 flex-shrink-0 text-sm sm:text-base text-gray-700 border-b-2 border-transparent hover:bg-gray-100" onclick="showTab('gov-schemes', this)">
+                <span class="hidden sm:inline">🏛️</span> Govt. Schemes
+            </button>
+            <button class="tab-button p-3 sm:px-6 flex-shrink-0 text-sm sm:text-base text-gray-700 border-b-2 border-transparent hover:bg-gray-100" onclick="showTab('science-tech', this)">
+                <span class="hidden sm:inline">🔬</span> Science & Tech
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
     <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
 
-        <!-- Today's Overview Section -->
-        <section class="mb-10">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Today's Commodity Prices in India (₹/Gram)</h2>
-            <div id="overview-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Card 1: 24K Gold -->
-                <div id="card-24k" class="price-card bg-white p-6 rounded-xl border-t-4 border-yellow-500">
-                    <h3 class="text-lg font-semibold text-gray-500 mb-2">24 Karat Gold (99.9% Pure)</h3>
-                    <div class="flex items-end justify-between">
-                        <p class="text-3xl font-bold text-gray-900">₹<span id="price-24k-1g">0.00</span></p>
-                        <div class="text-right">
-                            <span id="change-24k" class="text-sm font-medium"></span>
-                            <span class="text-xs text-gray-500 block">per gram</span>
-                        </div>
+        <!-- 1. COMMODITIES & GOLD Tab Content (Default View) -->
+        <div id="commodities" class="tab-content">
+            <section class="mb-10">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Today's Indicative Commodity Prices (₹/Gram)</h2>
+                <div id="overview-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Price Cards will be rendered here by JS (using mock data for structure) -->
+                    <div id="card-24k" class="price-card bg-white p-6 rounded-xl border-t-4 border-yellow-500">
+                        <h3 class="text-lg font-semibold text-gray-500 mb-2">24 Karat Gold</h3>
+                        <div class="flex items-end justify-between"><p class="text-3xl font-bold text-gray-900">₹<span id="price-24k-1g">0.00</span></p><div class="text-right"><span id="change-24k" class="text-sm font-medium"></span><span class="text-xs text-gray-500 block">per gram</span></div></div>
+                        <div class="mt-4 text-sm text-gray-500">10 Gram: ₹<span id="price-24k-10g">0.00</span></div>
                     </div>
-                    <div class="mt-4 text-sm text-gray-500">
-                        10 Gram: ₹<span id="price-24k-10g">0.00</span>
+                    <div id="card-22k" class="price-card bg-white p-6 rounded-xl border-t-4 border-amber-500">
+                        <h3 class="text-lg font-semibold text-gray-500 mb-2">22 Karat Gold</h3>
+                        <div class="flex items-end justify-between"><p class="text-3xl font-bold text-gray-900">₹<span id="price-22k-1g">0.00</span></p><div class="text-right"><span id="change-22k" class="text-sm font-medium"></span><span class="text-xs text-gray-500 block">per gram</span></div></div>
+                        <div class="mt-4 text-sm text-gray-500">10 Gram: ₹<span id="price-22k-10g">0.00</span></div>
                     </div>
-                </div>
-
-                <!-- Card 2: 22K Gold -->
-                <div id="card-22k" class="price-card bg-white p-6 rounded-xl border-t-4 border-amber-500">
-                    <h3 class="text-lg font-semibold text-gray-500 mb-2">22 Karat Gold (Jewellery)</h3>
-                    <div class="flex items-end justify-between">
-                        <p class="text-3xl font-bold text-gray-900">₹<span id="price-22k-1g">0.00</span></p>
-                        <div class="text-right">
-                            <span id="change-22k" class="text-sm font-medium"></span>
-                            <span class="text-xs text-gray-500 block">per gram</span>
-                        </div>
-                    </div>
-                    <div class="mt-4 text-sm text-gray-500">
-                        10 Gram: ₹<span id="price-22k-10g">0.00</span>
+                    <div id="card-silver" class="price-card bg-white p-6 rounded-xl border-t-4 border-gray-400">
+                        <h3 class="text-lg font-semibold text-gray-500 mb-2">Silver Price</h3>
+                        <div class="flex items-end justify-between"><p class="text-3xl font-bold text-gray-900">₹<span id="price-silver-1g">0.00</span></p><div class="text-right"><span id="change-silver" class="text-sm font-medium"></span><span class="text-xs text-gray-500 block">per gram</span></div></div>
+                        <div class="mt-4 text-sm text-gray-500">1 Kg: ₹<span id="price-silver-1kg">0.00</span></div>
                     </div>
                 </div>
-
-                <!-- Card 3: Silver -->
-                <div id="card-silver" class="price-card bg-white p-6 rounded-xl border-t-4 border-gray-400">
-                    <h3 class="text-lg font-semibold text-gray-500 mb-2">Silver Price</h3>
-                    <div class="flex items-end justify-between">
-                        <p class="text-3xl font-bold text-gray-900">₹<span id="price-silver-1g">0.00</span></p>
-                        <div class="text-right">
-                            <span id="change-silver" class="text-sm font-medium"></span>
-                            <span class="text-xs text-gray-500 block">per gram</span>
-                        </div>
-                    </div>
-                    <div class="mt-4 text-sm text-gray-500">
-                        1 Kg: ₹<span id="price-silver-1kg">0.00</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Gold Price Calculator Section -->
-        <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-indigo-500">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                <svg class="w-6 h-6 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M12 17h.01M9 14h.01M12 14h.01M15 14h.01M12 10h.01M15 10h.01M12 7h.01M15 7h.01M7 7v10m10-10v10m-3-13h-4a2 2 0 00-2 2v10a2 2 0 002 2h4a2 2 0 002-2V9a2 2 0 00-2-2z"></path></svg>
-                Gold Price Estimate Calculator
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                <!-- Input 1: Weight -->
-                <div>
-                    <label for="weight-input" class="block text-sm font-medium text-gray-700 mb-2">Enter Weight (in Grams)</label>
-                    <input type="number" id="weight-input" value="10" min="1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 transition duration-150" placeholder="e.g., 5, 10, 50">
-                </div>
-                <!-- Input 2: Carat Purity -->
-                <div>
-                    <label for="carat-select" class="block text-sm font-medium text-gray-700 mb-2">Select Purity (Carat)</label>
-                    <select id="carat-select" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-yellow-500 focus:border-yellow-500 transition duration-150">
-                        <option value="24">24 Karat (99.9% Pure)</option>
-                        <option value="22" selected>22 Karat (Jewellery Standard)</option>
-                        <option value="18">18 Karat</option>
-                        <option value="14">14 Karat</option>
-                    </select>
-                </div>
-                <!-- Calculation Button -->
-                <div class="self-end pt-2 md:pt-0">
-                    <button onclick="calculatePrice()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-indigo-900 font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 ease-in-out">
-                        Calculate Price
-                    </button>
-                </div>
-            </div>
-            <!-- Result Display -->
-            <div id="calculation-result" class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 text-gray-800 rounded-lg">
-                <p class="text-sm font-medium">Estimated Price:</p>
-                <p class="text-3xl font-extrabold text-indigo-700 mt-1">₹ <span id="final-price">0.00</span></p>
-                <p class="text-xs text-gray-500 mt-2">Note: Calculation is based on the live indicative rate displayed above, excluding making charges and taxes (GST/TCS).</p>
-            </div>
-        </section>
-
-        <!-- Market Analysis Section (GEMINI API INTEGRATION) -->
-        <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-teal-500">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                <svg class="w-6 h-6 mr-2 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v14m-6 3h6m-6 0h-2M9 19h2m-2 0h-2m-2 0h-2m2 0V6m-2 13v-6m-4 6v-6m0 0l4-4 4 4m-4-4v-6"></path></svg>
-                Current Commodity Market Analysis
-            </h2>
-            <button id="fetch-analysis-btn" onclick="fetchMarketAnalysis()" class="w-full sm:w-auto bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-200 ease-in-out mb-4">
-                Get Latest Price Drivers & Outlook
-            </button>
-
-            <div id="analysis-container" class="mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
-                <p id="analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
-                    Click the button above to fetch a summary of the current factors driving gold and silver prices in the Indian market.
-                </p>
-                <div id="analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
-                <div id="analysis-loader" class="hidden flex items-center justify-center text-teal-600">
-                    <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-teal-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    Fetching real-time market insights...
-                </div>
-            </div>
-        </section>
-
-        <!-- Historical Price Trend Section -->
-        <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-yellow-700">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                <svg class="w-6 h-6 mr-2 text-yellow-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                Historical Price Trend: 24K Gold (30 Days)
-            </h2>
-            <div class="h-80 w-full">
-                <canvas id="historicalChart"></canvas>
-            </div>
-        </section>
-
-        <!-- City-Wise Gold Rates Table -->
-        <section class="mb-10">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Gold Rate Today in Major Indian Cities (10 Grams)</h2>
-            <div class="table-container bg-white rounded-xl shadow overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider sticky left-0 z-10 bg-gray-50">City</th>
-                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">24K (₹)</th>
-                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Change</th>
-                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">22K (₹)</th>
-                            <th class="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Change</th>
-                        </tr>
-                    </thead>
-                    <tbody id="city-prices-body" class="bg-white divide-y divide-gray-200">
-                        <!-- City rows will be injected here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-            <p class="text-sm text-gray-500 mt-2 p-2">
-                <span class="font-bold">*Note:</span> Prices are indicative and exclude GST, TCS, and making charges.
-            </p>
-        </section>
-
-        <!-- Careers/Job Alerts Section (NEW) -->
-        <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-indigo-900">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                <svg class="w-6 h-6 mr-2 text-indigo-700" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.51 23.51 0 0115 13c-4.664 0-8.984 1.258-12 3.255v4.098c1.332-1.39 3.09-2.285 5-2.617 2.112-.358 3.96-1.12 5-2.036 1.04-.916 1.888-1.678 4-2.036 1.91.332 3.668 1.227 5 2.617v-4.098zM12 11a5 5 0 100-10 5 5 0 000 10z"></path></svg>
-                Careers in Commodities & Finance
-            </h2>
+            </section>
             
-            <div class="space-y-4">
-                <!-- Mock Job Alert 1 -->
-                <a href="#" class="job-card block p-4 border border-gray-200 rounded-lg">
-                    <h3 class="text-lg font-semibold text-indigo-700">Commodity Research Analyst (Gold/Silver)</h3>
-                    <p class="text-sm text-gray-600 mt-1">
-                        **Location:** Mumbai, MH | **Experience:** 2-5 Years | **Type:** Full-time
-                    </p>
-                    <p class="text-xs text-gray-500 mt-2">
-                        Analyze market trends, fundamental drivers, and geopolitical risks affecting bullion prices.
-                    </p>
-                </a>
-                
-                <!-- Mock Job Alert 2 -->
-                <a href="#" class="job-card block p-4 border border-gray-200 rounded-lg">
-                    <h3 class="text-lg font-semibold text-indigo-700">Fintech Product Manager (Digital Gold)</h3>
-                    <p class="text-sm text-gray-600 mt-1">
-                        **Location:** Bangalore, KA | **Experience:** 5+ Years | **Type:** Full-time
-                    </p>
-                    <p class="text-xs text-gray-500 mt-2">
-                        Lead product strategy for a leading digital investment platform focusing on gold and silver assets.
-                    </p>
-                </a>
-                
-                <!-- Mock Job Alert 3 -->
-                <a href="#" class="job-card block p-4 border border-gray-200 rounded-lg">
-                    <h3 class="text-lg font-semibold text-indigo-700">Jewellery Inventory Auditor</h3>
-                    <p class="text-sm text-gray-600 mt-1">
-                        **Location:** Chennai, TN | **Experience:** 1-3 Years | **Type:** Contract
-                    </p>
-                    <p class="text-xs text-gray-500 mt-2">
-                        Oversee and manage physical gold/silver inventory valuation based on daily market rates.
-                    </p>
-                </a>
-            </div>
+            <!-- Price Calculator -->
+            <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-indigo-500">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">Gold Price Estimate Calculator</h2>
+                <!-- Calculator inputs/results omitted for brevity, logic remains in script -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                    <div><label for="weight-input" class="block text-sm font-medium text-gray-700 mb-2">Enter Weight (in Grams)</label><input type="number" id="weight-input" value="10" min="1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 transition duration-150" placeholder="e.g., 5, 10, 50"></div>
+                    <div><label for="carat-select" class="block text-sm font-medium text-gray-700 mb-2">Select Purity (Carat)</label><select id="carat-select" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"><option value="24">24 Karat (99.9% Pure)</option><option value="22" selected>22 Karat (Jewellery Standard)</option><option value="18">18 Karat</option><option value="14">14 Karat</option></select></div>
+                    <div class="self-end pt-2 md:pt-0"><button onclick="calculatePrice()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-indigo-900 font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 ease-in-out"> Calculate Price </button></div>
+                </div>
+                <div id="calculation-result" class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 text-gray-800 rounded-lg"><p class="text-sm font-medium">Estimated Price:</p><p class="text-3xl font-extrabold text-indigo-700 mt-1">₹ <span id="final-price">0.00</span></p><p class="text-xs text-gray-500 mt-2">Note: Calculation is based on the live indicative rate displayed above, excluding charges and taxes.</p></div>
+            </section>
 
-            <div class="text-center mt-6">
-                <a href="#" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-lg text-white bg-indigo-700 hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
-                    View All Commodity & Finance Jobs
-                </a>
-            </div>
-        </section>
+            <!-- Historical Price Trend Section -->
+            <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-yellow-700">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">Historical Price Trend: 24K Gold (30 Days)</h2>
+                <div class="h-80 w-full"><canvas id="historicalChart"></canvas></div>
+            </section>
 
-        <!-- Mock YouTube & Analysis Section -->
-        <section class="mt-12 bg-white p-6 rounded-xl shadow-lg">
-            <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">
-                <svg class="w-6 h-6 mr-2 text-red-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                Gold Price Analysis & YouTube Updates
-            </h2>
-            <div id="youtube-mock-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Mock YouTube Videos -->
-            </div>
-            <div class="text-center mt-6">
-                <a href="#" class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out">
-                    View More Video Analysis
-                </a>
-            </div>
-        </section>
+            <!-- Market Analysis Section (GEMINI API) -->
+            <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-teal-500">
+                <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">Current Commodity Market Analysis (Live Insights)</h2>
+                <button id="fetch-analysis-btn" onclick="fetchMarketAnalysis('commodity-analysis', 'Act as an expert Indian commodity market analyst. Provide a single-paragraph summary of the current factors and global cues driving gold and silver prices in India today. Focus only on the main economic drivers.', 'What are the major price drivers for gold and silver commodities in India right now?')" class="w-full sm:w-auto bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-200 ease-in-out mb-4">
+                    Get Latest Price Drivers & Outlook
+                </button>
+                <div id="commodity-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
+                    <p id="commodity-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
+                        Click the button to fetch a summary of the current factors driving gold and silver prices.
+                    </p>
+                    <div id="commodity-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
+                    <div id="commodity-analysis-loader" class="loader hidden flex items-center justify-center text-teal-600">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        Fetching real-time market insights...
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 2. STOCK MARKET Tab Content -->
+        <div id="stock-market" class="tab-content hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-green-600 mr-2">📈</span> NSE/BSE Stock Market Data & News</h2>
+
+            <!-- Summary/Top Movers Section -->
+            <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-green-500">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Nifty 50 & Sensex Overview (Live Summary)</h3>
+                
+                <button onclick="fetchMarketAnalysis('stock-analysis', 'Act as a professional Indian stock market commentator. Provide a concise, single-paragraph summary of today\'s market performance, including brief commentary on Nifty 50 and Sensex, and mention the general trend (top gainers/losers segments).', 'Summarize today\'s performance of the Indian stock market, including Nifty 50 and Sensex trends.', this)" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition mb-4">
+                    Get Today's Market Summary
+                </button>
+
+                <div id="stock-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
+                    <p id="stock-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
+                        Click the button to get the latest analysis on the Nifty 50 and Sensex performance.
+                    </p>
+                    <div id="stock-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
+                    <div id="stock-analysis-loader" class="loader hidden flex items-center justify-center text-green-600">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        Fetching latest stock news...
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 3. JOB ALERTS Tab Content -->
+        <div id="job-alerts" class="tab-content hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-pink-600 mr-2">💼</span> Free Job Alerts & Notifications (Govt/Private)</h2>
+            <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-pink-500">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Top Job Notifications in India</h3>
+                
+                <button onclick="fetchMarketAnalysis('job-analysis', 'Act as a helpful Indian job search guide. Provide a concise, easy-to-read summary listing 3-4 top active Government or major Private Sector job notifications in India currently. For each, mention the organization/department and the last date to apply if possible.', 'List top 4 current job alerts in India for government and private sectors.', this)" class="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition mb-4">
+                    Get Latest Job Alerts
+                </button>
+
+                <div id="job-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
+                    <p id="job-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
+                        Click the button to fetch the latest top government and private job notifications.
+                    </p>
+                    <div id="job-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
+                    <div id="job-analysis-loader" class="loader hidden flex items-center justify-center text-pink-600">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        Searching for job notifications...
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- 4. GOVERNMENT SCHEMES Tab Content -->
+        <div id="gov-schemes" class="tab-content hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-blue-600 mr-2">🏛️</span> Central & State Government Schemes (Simplified)</h2>
+            <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-blue-500">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Scheme Information for Citizens</h3>
+                
+                <button onclick="fetchMarketAnalysis('schemes-analysis', 'Act as a government scheme explainer. Summarize 3 major active Central Government schemes (e.g., related to finance, housing, or welfare) in simple, easy-to-understand points. Focus on who benefits and the main goal.', 'Summarize 3 current central government schemes for the public.', this)" class="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition mb-4">
+                    Get Simplified Scheme Summaries
+                </button>
+
+                <div id="schemes-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
+                    <p id="schemes-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
+                        Click the button to get summaries of current central government schemes.
+                    </p>
+                    <div id="schemes-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
+                    <div id="schemes-analysis-loader" class="loader hidden flex items-center justify-center text-blue-600">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        Fetching government scheme details...
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- 5. SCIENCE & TECH Tab Content -->
+        <div id="science-tech" class="tab-content hidden">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-red-600 mr-2">🔬</span> Latest Science & Technology News</h2>
+            <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-red-500">
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Top Articles and Breakthroughs</h3>
+                
+                <button onclick="fetchMarketAnalysis('science-analysis', 'Act as a science journalist. Summarize 3 recent and significant science and technology news articles or breakthroughs (e.g., in space, AI, or medicine) in India or globally, keeping the summary engaging and concise.', 'Summarize 3 recent significant science and technology news articles.', this)" class="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition mb-4">
+                    Get Latest S&T News
+                </button>
+
+                <div id="science-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
+                    <p id="science-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
+                        Click the button to get the latest news on science and technology.
+                    </p>
+                    <div id="science-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
+                    <div id="science-analysis-loader" class="loader hidden flex items-center justify-center text-red-600">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        Fetching science and tech updates...
+                    </div>
+                </div>
+            </section>
+        </div>
 
     </main>
 
     <footer class="bg-gray-100 mt-10 p-4 sm:p-6 text-center text-gray-600 text-xs">
-        &copy; 2025 AR TREND HUB. Data Simulated for Demonstration Purposes. Market Analysis Powered by Gemini.
+        &copy; 2025 AR TREND HUB. Data Simulated for Demonstration Purposes. Live Analysis Powered by Gemini.
     </footer>
 
     <script>
@@ -308,7 +247,6 @@
         const currentRates = { '24k_1g': 0, '22k_1g': 0, '18k_1g': 0, '14k_1g': 0 };
 
         const formatCurrency = (value) => {
-            // Using 'en-IN' for Indian Rupees formatting
             return value.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
         };
 
@@ -320,22 +258,20 @@
         };
 
         // --- MOCK DATA ---
-        const MOCK_BASE_PRICE_24K = 65000; // 10 grams 24K (Starting point for today's mock price)
+        const MOCK_BASE_PRICE_24K = 65000; // 10 grams 24K 
         const MOCK_BASE_PRICE_22K = 59500; // 10 grams 22K
-        const MOCK_BASE_PRICE_SILVER = 92; // 1 gram Silver (approx 92000 per kg)
-
+        const MOCK_BASE_PRICE_SILVER = 92; // 1 gram Silver 
         const MOCK_OVERVIEW_CHANGE = {
-            '24k': 0.15, // +0.15% change for 24K
-            '22k': 0.12, // +0.12% change for 22K
-            'silver': -0.45 // -0.45% change for Silver
+            '24k': 0.15, 
+            '22k': 0.12,
+            'silver': -0.45
         };
 
         const CARAT_PURITY_MAP = {
-            // These are ratios relative to 24K (100% pure)
             24: 1.00,
-            22: 22 / 24, // 0.9167
-            18: 18 / 24, // 0.75
-            14: 14 / 24 // 0.5833
+            22: 22 / 24, 
+            18: 18 / 24, 
+            14: 14 / 24 
         };
 
         const CITY_PRICES = [
@@ -350,45 +286,32 @@
             { city: "Pune", base: 0.999, change: -0.12 },
         ];
 
-        const MOCK_YOUTUBE_VIDEOS = [
-            { title: "Gold Price Forecast: Will Yellow Metal hit ₹70,000 by Diwali?", channel: "AR TREND HUB", views: "1.2M" },
-            { title: "Silver Price Analysis: Is the White Metal a better Buy than Gold Today?", channel: "AR TREND HUB", views: "450K" },
-            { title: "How to Invest in Digital Gold vs SGBs (Sovereign Gold Bonds)", channel: "AR TREND HUB", views: "88K" },
-            { title: "Global Market Impact on Indian Gold Rates (US Fed Decision Explained)", channel: "AR TREND HUB", views: "600K" },
-        ];
-
         const MOCK_HISTORICAL_DATA = {
-            labels: [], // Dates for the last 30 days
-            prices: [] // Mock 24K Gold Price per 10 grams
+            labels: [], 
+            prices: [] 
         };
 
         function generateMockHistoricalData() {
             const days = 30;
             const endDate = new Date();
-            // Start price 5% lower than current mock price
             const startPrice = MOCK_BASE_PRICE_24K * 0.95;
             let currentPrice = startPrice;
 
             for (let i = 0; i < days; i++) {
                 const date = new Date(endDate);
-                // Calculate date for the label
                 date.setDate(endDate.getDate() - (days - 1 - i));
-                // Format date as DD MMM
                 MOCK_HISTORICAL_DATA.labels.push(date.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }));
-
-                // Simulate general upward trend and random fluctuation
-                const fluctuation = (Math.random() - 0.5) * 500; // +/- 250
+                const fluctuation = (Math.random() - 0.5) * 500; 
                 const trend = (MOCK_BASE_PRICE_24K - startPrice) / days * 1.5;
                 currentPrice += trend + fluctuation;
-                currentPrice = Math.max(currentPrice, MOCK_BASE_PRICE_24K * 0.9); // Keep a floor
-
-                // Round price to nearest 10 for clean display
+                currentPrice = Math.max(currentPrice, MOCK_BASE_PRICE_24K * 0.9);
                 MOCK_HISTORICAL_DATA.prices.push(Math.round(currentPrice / 10) * 10);
             }
-            // Ensure the last price is exactly the current mock price
             MOCK_HISTORICAL_DATA.prices[days - 1] = Math.round(MOCK_BASE_PRICE_24K * (1 + MOCK_OVERVIEW_CHANGE['24k'] / 100) / 10) * 10;
         }
         // --- END MOCK DATA ---
+
+        // --- CORE FUNCTIONS ---
 
         /**
          * Renders the main commodity overview cards and populates global rates.
@@ -399,75 +322,66 @@
             const price24k_10g_raw = MOCK_BASE_PRICE_24K * (1 + change24kPercent / 100);
             const price24k_1g_raw = price24k_10g_raw / 10;
             const price24k_1g_change = (price24k_10g_raw - MOCK_BASE_PRICE_24K) / 10;
-            currentRates['24k_1g'] = price24k_1g_raw; // Store 24K rate
+            currentRates['24k_1g'] = price24k_1g_raw;
 
-            document.getElementById('price-24k-1g').textContent = formatCurrency(price24k_1g_raw);
-            document.getElementById('price-24k-10g').textContent = formatCurrency(price24k_10g_raw);
-            document.getElementById('change-24k').innerHTML = formatChange(price24k_1g_change);
+            const element24k1g = document.getElementById('price-24k-1g');
+            const element24k10g = document.getElementById('price-24k-10g');
+            const element24kChange = document.getElementById('change-24k');
+            
+            if (element24k1g) element24k1g.textContent = formatCurrency(price24k_1g_raw);
+            if (element24k10g) element24k10g.textContent = formatCurrency(price24k_10g_raw);
+            if (element24kChange) element24kChange.innerHTML = formatChange(price24k_1g_change);
 
             // 22K Gold Calculations
             const change22kPercent = MOCK_OVERVIEW_CHANGE['22k'];
             const price22k_10g_raw = MOCK_BASE_PRICE_22K * (1 + change22kPercent / 100);
             const price22k_1g_raw = price22k_10g_raw / 10;
             const price22k_1g_change = (price22k_10g_raw - MOCK_BASE_PRICE_22K) / 10;
-            currentRates['22k_1g'] = price22k_1g_raw; // Store 22K rate
+            currentRates['22k_1g'] = price22k_1g_raw;
 
-            document.getElementById('price-22k-1g').textContent = formatCurrency(price22k_1g_raw);
-            document.getElementById('price-22k-10g').textContent = formatCurrency(price22k_10g_raw);
-            document.getElementById('change-22k').innerHTML = formatChange(price22k_1g_change);
+            const element22k1g = document.getElementById('price-22k-1g');
+            const element22k10g = document.getElementById('price-22k-10g');
+            const element22kChange = document.getElementById('change-22k');
 
-            // Calculate and store other carat rates based on 24K price
+            if (element22k1g) element22k1g.textContent = formatCurrency(price22k_1g_raw);
+            if (element22k10g) element22k10g.textContent = formatCurrency(price22k_10g_raw);
+            if (element22kChange) element22kChange.innerHTML = formatChange(price22k_1g_change);
+
+            // Calculate and store other carat rates
             const p24k = currentRates['24k_1g'];
             currentRates['18k_1g'] = p24k * CARAT_PURITY_MAP[18];
             currentRates['14k_1g'] = p24k * CARAT_PURITY_MAP[14];
 
-            // Silver Calculations (Only for display, not used in gold calculator)
+            // Silver Calculations
             const changeSilverPercent = MOCK_OVERVIEW_CHANGE['silver'];
             const priceSilver_1g_raw = MOCK_BASE_PRICE_SILVER * (1 + changeSilverPercent / 100);
             const priceSilver_1kg_raw = priceSilver_1g_raw * 1000;
             const priceSilver_1g_change = (priceSilver_1g_raw - MOCK_BASE_PRICE_SILVER);
 
-            document.getElementById('price-silver-1g').textContent = formatCurrency(priceSilver_1g_raw);
-            document.getElementById('price-silver-1kg').textContent = formatCurrency(priceSilver_1kg_raw);
-            document.getElementById('change-silver').innerHTML = formatChange(priceSilver_1g_change);
-        }
+            const elementSilver1g = document.getElementById('price-silver-1g');
+            const elementSilver1kg = document.getElementById('price-silver-1kg');
+            const elementSilverChange = document.getElementById('change-silver');
 
-        /**
-         * Renders the city-wise prices table.
-         */
-        function renderCityPrices() {
-            const tableBody = document.getElementById('city-prices-body');
-            tableBody.innerHTML = '';
-
-            CITY_PRICES.forEach(data => {
-                // Calculate city-specific prices based on base gold price and city factor
-                const city_24k_10g = (MOCK_BASE_PRICE_24K * data.base) * (1 + data.change / 100);
-                const city_22k_10g = (MOCK_BASE_PRICE_22K * data.base) * (1 + data.change / 100);
-
-                // Calculate the daily change value (difference between current city price and city's base price)
-                const change24k = city_24k_10g - (MOCK_BASE_PRICE_24K * data.base);
-                const change22k = city_22k_10g - (MOCK_BASE_PRICE_22K * data.base);
-
-                const row = `
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-indigo-700 sticky left-0 bg-white">${data.city}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 text-right font-medium">${formatCurrency(city_24k_10g)}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-right">${formatChange(change24k)}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 text-right font-medium">${formatCurrency(city_22k_10g)}</td>
-                        <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 text-right">${formatChange(change22k)}</td>
-                    </tr>
-                `;
-                tableBody.insertAdjacentHTML('beforeend', row);
-            });
+            if (elementSilver1g) elementSilver1g.textContent = formatCurrency(priceSilver_1g_raw);
+            if (elementSilver1kg) elementSilver1kg.textContent = formatCurrency(priceSilver_1kg_raw);
+            if (elementSilverChange) elementSilverChange.innerHTML = formatChange(priceSilver_1g_change);
         }
 
         /**
          * Renders the historical price chart using Chart.js.
          */
         function renderHistoricalChart() {
-            generateMockHistoricalData(); // Generate data first
+            const chartCanvas = document.getElementById('historicalChart');
+            if (!chartCanvas) return; // Only run if the element is present
 
-            const ctx = document.getElementById('historicalChart').getContext('2d');
+            generateMockHistoricalData(); // Generate data first
+            const ctx = chartCanvas.getContext('2d');
+            
+            // Check if chart already exists to prevent duplication on tab switch
+            if (chartCanvas.chartInstance) {
+                chartCanvas.chartInstance.destroy();
+            }
+
             const chartConfig = {
                 type: 'line',
                 data: {
@@ -475,66 +389,26 @@
                     datasets: [{
                         label: '24K Gold Rate (₹/10g)',
                         data: MOCK_HISTORICAL_DATA.prices,
-                        borderColor: 'rgb(202, 138, 4)', // Amber-700
-                        backgroundColor: 'rgba(251, 191, 36, 0.2)', // Amber-400 transparent fill
+                        borderColor: 'rgb(202, 138, 4)', 
+                        backgroundColor: 'rgba(251, 191, 36, 0.2)',
                         fill: true,
-                        tension: 0.2, // Smooth line
+                        tension: 0.2, 
                         pointRadius: 2,
                         pointBackgroundColor: 'rgb(202, 138, 4)',
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false, // Important for responsive canvas container
-                    plugins: {
-                        legend: { display: false },
-                        title: { display: false }
-                    },
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false }, title: { display: false } },
                     scales: {
-                        y: {
-                            title: { display: true, text: 'Price in INR (₹)', font: { size: 14 } },
-                            beginAtZero: false,
-                            grid: { color: 'rgba(0,0,0,0.05)' }
-                        },
-                        x: {
-                            title: { display: true, text: 'Last 30 Days', font: { size: 14 } },
-                            grid: { display: false }
-                        }
+                        y: { title: { display: true, text: 'Price in INR (₹)', font: { size: 14 } }, beginAtZero: false, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        x: { title: { display: true, text: 'Last 30 Days', font: { size: 14 } }, grid: { display: false } }
                     }
                 }
             };
 
-            new Chart(ctx, chartConfig);
-        }
-
-        /**
-         * Renders the mock YouTube updates section.
-         */
-        function renderYoutubeUpdates() {
-            const ytGrid = document.getElementById('youtube-mock-grid');
-            ytGrid.innerHTML = '';
-
-            MOCK_YOUTUBE_VIDEOS.forEach((video) => {
-                const placeholderText = encodeURIComponent(video.title);
-                const thumbnailUrl = `https://placehold.co/400x225/A020F0/ffffff?text=${placeholderText.substring(0, 30)}...`;
-                const videoHtml = `
-                    <a href="#" class="yt-mock-item bg-gray-50 rounded-xl overflow-hidden cursor-pointer transition duration-300 ease-in-out border border-gray-200">
-                        <!-- Mock Thumbnail -->
-                        <div class="relative w-full h-40 bg-gray-300 flex items-center justify-center overflow-hidden">
-                            <img src="${thumbnailUrl}" onerror="this.src='https://placehold.co/400x225/111827/9ca3af?text=Video+Thumbnail';" alt="${video.title}" class="object-cover w-full h-full">
-                            <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                                <svg class="w-12 h-12 text-white opacity-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
-                            </div>
-                        </div>
-                        <div class="p-4">
-                            <h4 class="text-base font-semibold text-gray-900 mb-1 leading-snug">${video.title}</h4>
-                            <p class="text-sm text-gray-600">${video.channel}</p>
-                            <p class="text-xs text-gray-400 mt-1">${video.views} Views • 2 Days Ago</p>
-                        </div>
-                    </a>
-                `;
-                ytGrid.insertAdjacentHTML('beforeend', videoHtml);
-            });
+            chartCanvas.chartInstance = new Chart(ctx, chartConfig);
         }
 
         /**
@@ -545,10 +419,10 @@
             const caratSelect = document.getElementById('carat-select');
             const resultElement = document.getElementById('final-price');
 
+            if (!weightInput || !caratSelect || !resultElement) return;
+
             const weight = parseFloat(weightInput.value);
             const carat = caratSelect.value;
-
-            // Basic input validation
             if (isNaN(weight) || weight <= 0) {
                 resultElement.textContent = 'Invalid Weight';
                 resultElement.classList.add('text-red-600');
@@ -569,7 +443,6 @@
             } else if (caratFloat === 14) {
                 ratePerGram = currentRates['14k_1g'];
             } else {
-                // Fallback generic calculation for other purities
                 ratePerGram = currentRates['24k_1g'] * (caratFloat / 24);
             }
 
@@ -591,35 +464,83 @@
             const now = new Date();
             const timeString = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
             const dateString = now.toLocaleDateString('en-IN', { year: 'numeric', month: 'short', day: 'numeric' });
-            document.getElementById('current-time').textContent = `${dateString} | ${timeString}`;
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                 timeElement.textContent = `${dateString} | ${timeString}`;
+            }
         }
 
-        // --- GEMINI API INTEGRATION for Market Analysis ---
+        // --- TABBED NAVIGATION LOGIC ---
+
+        function showTab(tabId, button) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+
+            // Deactivate all buttons
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show the selected tab content
+            const selectedContent = document.getElementById(tabId);
+            if (selectedContent) {
+                selectedContent.classList.remove('hidden');
+            }
+            
+            // Activate the clicked button
+            if (button) {
+                button.classList.add('active');
+            }
+
+            // Specific initialization logic for certain tabs
+            if (tabId === 'commodities') {
+                // Rerender chart when Commodities tab is opened to handle potential canvas resize issues
+                renderHistoricalChart();
+            }
+        }
+
+
+        // --- GEMINI API INTEGRATION for all Analysis Sections ---
 
         /**
          * Displays the generated text and sources in the analysis container.
+         * @param {string} containerId - The ID prefix of the container elements (e.g., 'commodity-analysis')
          * @param {Object} data - Contains text and an array of sources.
          */
-        function updateAnalysisUI(data) {
-            const analysisTextElement = document.getElementById('analysis-text');
-            const analysisSourcesElement = document.getElementById('analysis-sources');
-            const loader = document.getElementById('analysis-loader');
-            const button = document.getElementById('fetch-analysis-btn');
+        function updateAnalysisUI(containerId, data) {
+            const analysisTextElement = document.getElementById(`${containerId}-text`);
+            const analysisSourcesElement = document.getElementById(`${containerId}-sources`);
+            const loader = document.getElementById(`${containerId}-loader`);
+            const button = document.querySelector(`#${containerId}-container`).previousElementSibling; // Button is the sibling above the container
 
             loader.classList.add('hidden');
-            button.disabled = false;
-            button.textContent = 'Get Latest Price Drivers & Outlook';
-            analysisTextElement.classList.remove('text-center', 'italic', 'text-gray-500');
+            if (button) {
+                button.disabled = false;
+                button.textContent = `Get Latest ${containerId.split('-')[0].charAt(0).toUpperCase() + containerId.split('-')[0].slice(1)} Data`;
+            }
+            analysisTextElement.classList.remove('text-center', 'italic', 'text-gray-500', 'text-red-600');
+            analysisTextElement.classList.add('text-left');
 
             if (data.error) {
                 analysisTextElement.textContent = `Error fetching analysis: ${data.error}. Please try again later.`;
-                analysisTextElement.classList.add('text-red-600');
+                analysisTextElement.classList.add('text-red-600', 'text-center');
                 analysisSourcesElement.innerHTML = '';
                 return;
             }
 
             // Display the generated text
-            analysisTextElement.textContent = data.text;
+            // Replace markdown-style lists/headings with HTML for better formatting
+            let formattedText = data.text;
+            formattedText = formattedText.replace(/### (.*)/g, '<h4 class="text-lg font-semibold mt-4 mb-2">$1</h4>');
+            formattedText = formattedText.replace(/## (.*)/g, '<h3 class="text-xl font-bold mt-5 mb-3">$1</h3>');
+            formattedText = formattedText.replace(/\* (.*)/g, '<li>$1</li>');
+            formattedText = formattedText.replace(/\n\s*<li>/g, '<ul><li>').replace(/<\/li>\s*\n/g, '</li></ul>').replace(/<\/ul><ul>/g, '');
+
+
+            analysisTextElement.innerHTML = formattedText;
+            analysisTextElement.classList.remove('text-center');
 
             // Display the sources if they exist
             if (data.sources && data.sources.length > 0) {
@@ -632,7 +553,7 @@
                 ).join('');
 
                 analysisSourcesElement.innerHTML = `
-                    <p class="font-medium text-teal-600 mb-1">Sources:</p>
+                    <p class="font-medium text-teal-600 mb-1 mt-4">Sources:</p>
                     <ul class="list-disc list-inside space-y-0.5 ml-2">${sourceList}</ul>
                 `;
             } else {
@@ -641,23 +562,23 @@
         }
 
         /**
-         * Fetches a grounded market analysis summary using the Gemini API.
+         * Fetches a grounded analysis summary using the Gemini API.
+         * @param {string} containerId - The ID prefix of the container elements (e.g., 'commodity-analysis')
+         * @param {string} systemPrompt - The system instruction to guide the model's persona.
+         * @param {string} userQuery - The specific query for the model.
+         * @param {HTMLElement} buttonElement - The button that triggered the function, for dynamic text update.
          */
-        async function fetchMarketAnalysis() {
-            const loader = document.getElementById('analysis-loader');
-            const button = document.getElementById('fetch-analysis-btn');
-            const analysisTextElement = document.getElementById('analysis-text');
+        async function fetchMarketAnalysis(containerId, systemPrompt, userQuery, buttonElement) {
+            const loader = document.getElementById(`${containerId}-loader`);
+            const analysisTextElement = document.getElementById(`${containerId}-text`);
 
             // Reset UI and show loading state
-            analysisTextElement.textContent = '';
-            document.getElementById('analysis-sources').innerHTML = '';
+            analysisTextElement.innerHTML = '';
+            document.getElementById(`${containerId}-sources`).innerHTML = '';
             loader.classList.remove('hidden');
-            button.disabled = true;
-            button.textContent = 'Analyzing Market...';
+            buttonElement.disabled = true;
+            buttonElement.textContent = 'Analyzing and Fetching Data...';
 
-            const systemPrompt = "Act as a concise, expert Indian commodity market analyst. Provide a single-paragraph summary of the current factors and global cues (e.g., USD movement, US Fed, geopolitical events) driving the price of gold and silver in India today. Focus only on the main economic drivers.";
-            const userQuery = "What are the major price drivers for gold and silver commodities in India right now?";
-            
             // NOTE: The API key is left as an empty string and will be provided by the runtime environment.
             const apiKey = ""; 
             const model = 'gemini-2.5-flash-preview-09-2025';
@@ -711,27 +632,23 @@
                     console.error(`Attempt ${attempt + 1} failed:`, error);
                     result.error = "Could not connect to the analysis service.";
                     if (attempt < maxRetries - 1) {
-                        // Exponential backoff
                         await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
                     } else {
-                        // All retries failed
-                        updateAnalysisUI(result);
+                        updateAnalysisUI(containerId, result);
                         return;
                     }
                 }
             }
-
-            updateAnalysisUI(result);
+            updateAnalysisUI(containerId, result);
         }
+
 
         // --- Initialization ---
         window.onload = function() {
-            // Initial setup
+            // Initial setup for the Commodities tab (since it's the default view)
             renderOverview();
-            renderCityPrices();
             renderHistoricalChart();
-            renderYoutubeUpdates();
-
+            
             // Initial time update and set interval for real-time clock
             updateTime();
             setInterval(updateTime, 1000);
@@ -739,9 +656,14 @@
             // Calculate default price on load
             calculatePrice();
 
-            // Attach event listeners to inputs so calculation runs automatically
-            document.getElementById('weight-input').addEventListener('input', calculatePrice);
-            document.getElementById('carat-select').addEventListener('change', calculatePrice);
+            // Attach event listeners for the calculator (only on the commodities tab)
+            const weightInput = document.getElementById('weight-input');
+            const caratSelect = document.getElementById('carat-select');
+            if (weightInput) weightInput.addEventListener('input', calculatePrice);
+            if (caratSelect) caratSelect.addEventListener('change', calculatePrice);
+
+            // Ensure the first tab is active on load
+            document.querySelector('.tab-button').classList.add('active');
         };
     </script>
 </body>
