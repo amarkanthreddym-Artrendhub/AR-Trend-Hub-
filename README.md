@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR TREND HUB | Comprehensive Indian Portal</title>
@@ -56,8 +56,8 @@
             justify-content: center;
         }
     </style>
-</head>
-<body>
+    </head>
+    <body>
     <!-- Header and Main Title -->
     <header class="bg-indigo-700 text-white p-4 sm:p-6 shadow-xl">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center">
