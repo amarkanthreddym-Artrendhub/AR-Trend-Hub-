@@ -32,6 +32,29 @@
             font-weight: 600;
             background-color: #f3f4f6;
         }
+        /* Style for the rendered manual content areas (contenteditable=true) */
+        .manual-output {
+            border: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            padding: 1rem;
+            min-height: 200px;
+            border-radius: 0.5rem;
+            resize: vertical;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            outline: none; /* Remove focus border */
+        }
+        .manual-output:focus {
+            border-color: #4f46e5; /* Indigo-600 */
+            box-shadow: 0 0 0 1px #4f46e5;
+        }
+        /* Loader styles for commodity analysis only */
+        .analysis-loader-container {
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -39,7 +62,7 @@
     <header class="bg-indigo-700 text-white p-4 sm:p-6 shadow-xl">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <div class="flex items-center">
-                <!-- LOGO INTEGRATION (Remember to upload the image!) -->
+                <!-- LOGO INTEGRATION HERE -->
                 <img src="assets/logo.png" 
                      onerror="this.onerror=null; this.src='https://placehold.co/180x40/4f46e5/ffffff?text=AR+TREND+HUB';"
                      alt="AR TREND HUB Logo" 
@@ -83,17 +106,19 @@
             <section class="mb-10">
                 <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-4">Today's Indicative Commodity Prices (₹/Gram)</h2>
                 <div id="overview-cards" class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Price Cards will be rendered here by JS (using mock data for structure) -->
+                    <!-- Card 1: 24K Gold -->
                     <div id="card-24k" class="price-card bg-white p-6 rounded-xl border-t-4 border-yellow-500">
                         <h3 class="text-lg font-semibold text-gray-500 mb-2">24 Karat Gold</h3>
                         <div class="flex items-end justify-between"><p class="text-3xl font-bold text-gray-900">₹<span id="price-24k-1g">0.00</span></p><div class="text-right"><span id="change-24k" class="text-sm font-medium"></span><span class="text-xs text-gray-500 block">per gram</span></div></div>
                         <div class="mt-4 text-sm text-gray-500">10 Gram: ₹<span id="price-24k-10g">0.00</span></div>
                     </div>
+                    <!-- Card 2: 22K Gold -->
                     <div id="card-22k" class="price-card bg-white p-6 rounded-xl border-t-4 border-amber-500">
                         <h3 class="text-lg font-semibold text-gray-500 mb-2">22 Karat Gold</h3>
                         <div class="flex items-end justify-between"><p class="text-3xl font-bold text-gray-900">₹<span id="price-22k-1g">0.00</span></p><div class="text-right"><span id="change-22k" class="text-sm font-medium"></span><span class="text-xs text-gray-500 block">per gram</span></div></div>
                         <div class="mt-4 text-sm text-gray-500">10 Gram: ₹<span id="price-22k-10g">0.00</span></div>
                     </div>
+                    <!-- Card 3: Silver -->
                     <div id="card-silver" class="price-card bg-white p-6 rounded-xl border-t-4 border-gray-400">
                         <h3 class="text-lg font-semibold text-gray-500 mb-2">Silver Price</h3>
                         <div class="flex items-end justify-between"><p class="text-3xl font-bold text-gray-900">₹<span id="price-silver-1g">0.00</span></p><div class="text-right"><span id="change-silver" class="text-sm font-medium"></span><span class="text-xs text-gray-500 block">per gram</span></div></div>
@@ -105,13 +130,12 @@
             <!-- Price Calculator -->
             <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-indigo-500">
                 <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">Gold Price Estimate Calculator</h2>
-                <!-- Calculator inputs/results omitted for brevity, logic remains in script -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                     <div><label for="weight-input" class="block text-sm font-medium text-gray-700 mb-2">Enter Weight (in Grams)</label><input type="number" id="weight-input" value="10" min="1" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 transition duration-150" placeholder="e.g., 5, 10, 50"></div>
                     <div><label for="carat-select" class="block text-sm font-medium text-gray-700 mb-2">Select Purity (Carat)</label><select id="carat-select" class="w-full p-3 border border-gray-300 rounded-lg bg-white focus:ring-yellow-500 focus:border-yellow-500 transition duration-150"><option value="24">24 Karat (99.9% Pure)</option><option value="22" selected>22 Karat (Jewellery Standard)</option><option value="18">18 Karat</option><option value="14">14 Karat</option></select></div>
                     <div class="self-end pt-2 md:pt-0"><button onclick="calculatePrice()" class="w-full bg-yellow-500 hover:bg-yellow-600 text-indigo-900 font-bold py-3 px-4 rounded-lg shadow-md transition duration-200 ease-in-out"> Calculate Price </button></div>
                 </div>
-                <div id="calculation-result" class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 text-gray-800 rounded-lg"><p class="text-sm font-medium">Estimated Price:</p><p class="text-3xl font-extrabold text-indigo-700 mt-1">₹ <span id="final-price">0.00</span></p><p class="text-xs text-gray-500 mt-2">Note: Calculation is based on the live indicative rate displayed above, excluding charges and taxes.</p></div>
+                <div id="calculation-result" class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-500 text-gray-800 rounded-lg"><p class="text-sm font-medium">Estimated Price:</p><p class="text-3xl font-extrabold text-indigo-700 mt-1">₹ <span id="final-price">0.00</span></p><p class="text-xs text-gray-500 mt-2 font-semibold">Note: This is a SIMULATED price based on predefined data, not a live feed.</p></div>
             </section>
 
             <!-- Historical Price Trend Section -->
@@ -120,10 +144,10 @@
                 <div class="h-80 w-full"><canvas id="historicalChart"></canvas></div>
             </section>
 
-            <!-- Market Analysis Section (GEMINI API) -->
+            <!-- Market Analysis Section (GEMINI API - Retained) -->
             <section class="mb-10 p-6 bg-white rounded-xl shadow-lg border-t-4 border-teal-500">
                 <h2 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-6 flex items-center">Current Commodity Market Analysis (Live Insights)</h2>
-                <button id="fetch-analysis-btn" onclick="fetchMarketAnalysis('commodity-analysis', 'Act as an expert Indian commodity market analyst. Provide a single-paragraph summary of the current factors and global cues driving gold and silver prices in India today. Focus only on the main economic drivers.', 'What are the major price drivers for gold and silver commodities in India right now?')" class="w-full sm:w-auto bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-200 ease-in-out mb-4">
+                <button id="commodity-analysis-btn" onclick="fetchMarketAnalysis('commodity-analysis', 'Act as an expert Indian commodity market analyst. Provide a concise, single-paragraph summary of the current factors and global cues driving gold and silver prices in India today. Focus only on the main economic drivers.', 'What are the major price drivers for gold and silver commodities in India right now?')" class="w-full sm:w-auto bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-200 ease-in-out mb-4">
                     Get Latest Price Drivers & Outlook
                 </button>
                 <div id="commodity-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
@@ -131,7 +155,7 @@
                         Click the button to fetch a summary of the current factors driving gold and silver prices.
                     </p>
                     <div id="commodity-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
-                    <div id="commodity-analysis-loader" class="loader hidden flex items-center justify-center text-teal-600">
+                    <div id="commodity-analysis-loader" class="loader analysis-loader-container hidden text-teal-600">
                         <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                         Fetching real-time market insights...
                     </div>
@@ -139,104 +163,132 @@
             </section>
         </div>
 
-        <!-- 2. STOCK MARKET Tab Content -->
+        <!-- 2. STOCK MARKET Tab Content (Manual/Editable HTML) -->
         <div id="stock-market" class="tab-content hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-green-600 mr-2">📈</span> NSE/BSE Stock Market Data & News</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-green-600 mr-2">📈</span> NSE/BSE Stock Market Data & News (Editable)</h2>
 
-            <!-- Summary/Top Movers Section -->
             <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-green-500">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">Nifty 50 & Sensex Overview (Live Summary)</h3>
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Nifty 50, Sensex, Top Movers & News</h3>
                 
-                <button onclick="fetchMarketAnalysis('stock-analysis', 'Act as a professional Indian stock market commentator. Provide a concise, single-paragraph summary of today\'s market performance, including brief commentary on Nifty 50 and Sensex, and mention the general trend (top gainers/losers segments).', 'Summarize today\'s performance of the Indian stock market, including Nifty 50 and Sensex trends.', this)" class="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition mb-4">
-                    Get Today's Market Summary
-                </button>
+                <div 
+                    id="stock-market-input" 
+                    class="manual-output w-full" 
+                    contenteditable="true" 
+                    data-placeholder="Paste your daily market report here. You can use HTML tags like <b>, <ul>, and <img>.
 
-                <div id="stock-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
-                    <p id="stock-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
-                        Click the button to get the latest analysis on the Nifty 50 and Sensex performance.
-                    </p>
-                    <div id="stock-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
-                    <div id="stock-analysis-loader" class="loader hidden flex items-center justify-center text-green-600">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        Fetching latest stock news...
-                    </div>
+Example:
+<h4 class='text-lg font-bold'>Market Summary - 28 Nov</h4>
+<ul>
+    <li>Nifty 50: Closed at 25,500 <span class='up-trend'>(+0.8%)</span></li>
+    <li>Top Gainer: Reliance <span class='up-trend'>(+3%)</span></li>
+</ul>
+<p class='text-sm mt-3'>Market sentiment remains strong...</p>
+<img src='https://placehold.co/400x150/059669/ffffff?text=NSE+Chart' alt='NSE Chart' class='mt-4 rounded-lg w-full max-w-sm'>
+"
+                >
+<h4 class='text-lg font-bold'>Market Summary - Today</h4>
+<ul>
+    <li>Nifty 50: Closed at 25,500 <span class='up-trend'>(+0.8%)</span></li>
+    <li>Sensex: Closed at 85,120 <span class='up-trend'>(+0.75%)</span></li>
+</ul>
+<img src='https://placehold.co/400x150/059669/ffffff?text=NSE+Chart' alt='NSE Chart' class='mt-4 rounded-lg w-full max-w-sm'>
                 </div>
+                <p class="text-sm text-gray-500 mt-2">Edit the box above to update the content. You can paste HTML, links, and images here.</p>
             </section>
         </div>
 
-        <!-- 3. JOB ALERTS Tab Content -->
+        <!-- 3. JOB ALERTS Tab Content (Manual/Editable HTML) -->
         <div id="job-alerts" class="tab-content hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-pink-600 mr-2">💼</span> Free Job Alerts & Notifications (Govt/Private)</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-pink-600 mr-2">💼</span> Free Job Alerts & Notifications (Editable)</h2>
             <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-pink-500">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Top Job Notifications in India</h3>
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Top Job Notifications in India (Govt/Private)</h3>
                 
-                <button onclick="fetchMarketAnalysis('job-analysis', 'Act as a helpful Indian job search guide. Provide a concise, easy-to-read summary listing 3-4 top active Government or major Private Sector job notifications in India currently. For each, mention the organization/department and the last date to apply if possible.', 'List top 4 current job alerts in India for government and private sectors.', this)" class="w-full sm:w-auto bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition mb-4">
-                    Get Latest Job Alerts
-                </button>
+                <div 
+                    id="job-alerts-input" 
+                    class="manual-output w-full" 
+                    contenteditable="true" 
+                    data-placeholder="Paste the top 3-5 job alerts here. You can include links to PDF circulars.
 
-                <div id="job-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
-                    <p id="job-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
-                        Click the button to fetch the latest top government and private job notifications.
-                    </p>
-                    <div id="job-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
-                    <div id="job-analysis-loader" class="loader hidden flex items-center justify-center text-pink-600">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        Searching for job notifications...
-                    </div>
+Example:
+<h4 class='text-lg font-bold text-pink-600'>GOVT JOB ALERTS</h4>
+<ol class='list-decimal list-inside ml-4'>
+    <li>UPSC Civil Services: Last Date 15 Dec 2025.
+        <a href='[LINK_TO_PDF_CIRCULAR]' target='_blank' class='text-blue-600 hover:underline'>[Download Circular PDF]</a>
+    </li>
+    <li>SSC CGL 2026: Apply now. Vacancy details available.</li>
+</ol>
+<p class='text-sm mt-4 font-semibold'>Need help? Contact us for application support.</p>"
+                >
+<h4 class='text-lg font-bold text-pink-600'>GOVT JOB ALERTS</h4>
+<ol class='list-decimal list-inside ml-4'>
+    <li>UPSC Civil Services: Last Date 15 Dec 2025. <a href='#' target='_blank' class='text-blue-600 hover:underline'>[Download Circular PDF]</a></li>
+    <li>SBI PO Recruitment: 5000 vacancies. Apply by 30 Nov 2025.</li>
+</ol>
                 </div>
+                <p class="text-sm text-gray-500 mt-2">Edit the box above. Use links (`<a href='...'>`) for PDF circulars.</p>
             </section>
         </div>
         
-        <!-- 4. GOVERNMENT SCHEMES Tab Content -->
+        <!-- 4. GOVERNMENT SCHEMES Tab Content (Manual/Editable HTML) -->
         <div id="gov-schemes" class="tab-content hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-blue-600 mr-2">🏛️</span> Central & State Government Schemes (Simplified)</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-blue-600 mr-2">🏛️</span> Central & State Government Schemes (Editable)</h2>
             <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-blue-500">
-                <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Scheme Information for Citizens</h3>
+                <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Scheme Information for Citizens (Simplified)</h3>
                 
-                <button onclick="fetchMarketAnalysis('schemes-analysis', 'Act as a government scheme explainer. Summarize 3 major active Central Government schemes (e.g., related to finance, housing, or welfare) in simple, easy-to-understand points. Focus on who benefits and the main goal.', 'Summarize 3 current central government schemes for the public.', this)" class="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition mb-4">
-                    Get Simplified Scheme Summaries
-                </button>
+                <div 
+                    id="schemes-input" 
+                    class="manual-output w-full" 
+                    contenteditable="true" 
+                    data-placeholder="Paste scheme summaries here. You can embed a PDF directly (best for mobile).
 
-                <div id="schemes-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
-                    <p id="schemes-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
-                        Click the button to get summaries of current central government schemes.
-                    </p>
-                    <div id="schemes-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
-                    <div id="schemes-analysis-loader" class="loader hidden flex items-center justify-center text-blue-600">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        Fetching government scheme details...
-                    </div>
+Example (PDF Embed):
+<h4 class='text-lg font-bold'>Pradhan Mantri Awas Yojana (PMAY)</h4>
+<p>Goal: Affordable housing for urban and rural poor.</p>
+<p>View official brochure:</p>
+<iframe src='[LINK_TO_PUBLIC_PDF]' class='w-full h-80 border rounded-lg' title='PMAY Brochure'></iframe>"
+                >
+<h4 class='text-lg font-bold'>Pradhan Mantri Awas Yojana (PMAY)</h4>
+<p>Goal: Affordable housing for urban and rural poor.</p>
+<p>Benefit: Subsidy on home loan interest rates.</p>
+<p class='text-sm mt-2'>Eligibility: LIG/MIG groups (check official guidelines).</p>
                 </div>
+                <p class="text-sm text-gray-500 mt-2">Edit the box above. Use an `<iframe>` tag for direct PDF embeds (if the PDF is hosted publicly).</p>
             </section>
         </div>
 
-        <!-- 5. SCIENCE & TECH Tab Content -->
+        <!-- 5. SCIENCE & TECH Tab Content (Manual/Editable HTML) -->
         <div id="science-tech" class="tab-content hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-red-600 mr-2">🔬</span> Latest Science & Technology News</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-red-600 mr-2">🔬</span> Latest Science & Technology News (Editable)</h2>
             <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-red-500">
                 <h3 class="text-xl font-semibold text-gray-700 mb-4">Top Articles and Breakthroughs</h3>
                 
-                <button onclick="fetchMarketAnalysis('science-analysis', 'Act as a science journalist. Summarize 3 recent and significant science and technology news articles or breakthroughs (e.g., in space, AI, or medicine) in India or globally, keeping the summary engaging and concise.', 'Summarize 3 recent significant science and technology news articles.', this)" class="w-full sm:w-auto bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition mb-4">
-                    Get Latest S&T News
-                </button>
+                <div 
+                    id="science-tech-input" 
+                    class="manual-output w-full" 
+                    contenteditable="true" 
+                    data-placeholder="Paste the latest science and technology news here. You can use image tags for relevant diagrams or photos.
 
-                <div id="science-analysis-container" class="analysis-container mt-4 p-4 border border-gray-200 rounded-lg bg-gray-50 min-h-[150px] flex flex-col justify-center items-center">
-                    <p id="science-analysis-text" class="text-gray-700 text-base leading-relaxed text-center">
-                        Click the button to get the latest news on science and technology.
-                    </p>
-                    <div id="science-analysis-sources" class="mt-4 w-full text-xs text-gray-500"></div>
-                    <div id="science-analysis-loader" class="loader hidden flex items-center justify-center text-red-600">
-                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                        Fetching science and tech updates...
-                    </div>
+Example:
+<h4 class='text-lg font-bold text-red-600'>ISRO Moon Mission Update</h4>
+<p>ISRO greenlights mission to study Venus atmosphere in 2027.</p>
+<img src='https://placehold.co/400x200/4f46e5/ffffff?text=Venus+Mission+Diagram' alt='Venus Mission Diagram' class='mt-4 rounded-lg w-full max-w-md'>
+<ul class='list-disc list-inside ml-4 mt-3'>
+    <li>The mission targets cloud composition.</li>
+    <li>Launch window opens in November 2027.</li>
+</ul>"
+                >
+<h4 class='text-lg font-bold text-red-600'>AI Breakthrough</h4>
+<p>New model predicts protein folding with 99% accuracy, revolutionizing drug discovery.</p>
+<img src='https://placehold.co/400x200/4f46e5/ffffff?text=Protein+Folding+Diagram' alt='Protein Folding Diagram' class='mt-4 rounded-lg w-full max-w-md'>
                 </div>
+                <p class="text-sm text-gray-500 mt-2">Edit the box above. Use the `<img>` tag to display images related to science and technology.</p>
             </section>
         </div>
 
     </main>
 
     <footer class="bg-gray-100 mt-10 p-4 sm:p-6 text-center text-gray-600 text-xs">
-        &copy; 2025 AR TREND HUB. Data Simulated for Demonstration Purposes. Live Analysis Powered by Gemini.
+        &copy; 2025 AR TREND HUB. Gold Prices Simulated. Live Commodity Analysis Powered by Gemini. All other data manually provided.
     </footer>
 
     <script>
@@ -258,9 +310,10 @@
         };
 
         // --- MOCK DATA ---
-        const MOCK_BASE_PRICE_24K = 65000; // 10 grams 24K 
-        const MOCK_BASE_PRICE_22K = 59500; // 10 grams 22K
-        const MOCK_BASE_PRICE_SILVER = 92; // 1 gram Silver 
+        const MOCK_BASE_PRICE_24K = 75000; // Indicative price for 10 grams 24K
+        const MOCK_BASE_PRICE_22K = 68750; // Indicative price for 10 grams 22K
+        const MOCK_BASE_PRICE_SILVER = 95; // Indicative price for 1 gram Silver (approx ₹95,000 per kg)
+
         const MOCK_OVERVIEW_CHANGE = {
             '24k': 0.15, 
             '22k': 0.12,
@@ -273,18 +326,6 @@
             18: 18 / 24, 
             14: 14 / 24 
         };
-
-        const CITY_PRICES = [
-            { city: "Mumbai", base: 1.00, change: -0.15 },
-            { city: "Delhi", base: 1.001, change: 0.05 },
-            { city: "Chennai", base: 1.004, change: 0.22 },
-            { city: "Kolkata", base: 0.998, change: -0.10 },
-            { city: "Bangalore", base: 1.00, change: 0.15 },
-            { city: "Hyderabad", base: 1.002, change: 0.00 },
-            { city: "Ahmedabad", base: 1.00, change: 0.18 },
-            { city: "Jaipur", base: 1.001, change: -0.05 },
-            { city: "Pune", base: 0.999, change: -0.12 },
-        ];
 
         const MOCK_HISTORICAL_DATA = {
             labels: [], 
@@ -313,71 +354,49 @@
 
         // --- CORE FUNCTIONS ---
 
-        /**
-         * Renders the main commodity overview cards and populates global rates.
-         */
+        /** Renders the main commodity overview cards and populates global rates. */
         function renderOverview() {
-            // 24K Gold Calculations
+            // Calculations (same as before)
             const change24kPercent = MOCK_OVERVIEW_CHANGE['24k'];
             const price24k_10g_raw = MOCK_BASE_PRICE_24K * (1 + change24kPercent / 100);
             const price24k_1g_raw = price24k_10g_raw / 10;
             const price24k_1g_change = (price24k_10g_raw - MOCK_BASE_PRICE_24K) / 10;
             currentRates['24k_1g'] = price24k_1g_raw;
-
             const element24k1g = document.getElementById('price-24k-1g');
             const element24k10g = document.getElementById('price-24k-10g');
             const element24kChange = document.getElementById('change-24k');
-            
             if (element24k1g) element24k1g.textContent = formatCurrency(price24k_1g_raw);
             if (element24k10g) element24k10g.textContent = formatCurrency(price24k_10g_raw);
             if (element24kChange) element24kChange.innerHTML = formatChange(price24k_1g_change);
 
-            // 22K Gold Calculations
             const change22kPercent = MOCK_OVERVIEW_CHANGE['22k'];
             const price22k_10g_raw = MOCK_BASE_PRICE_22K * (1 + change22kPercent / 100);
             const price22k_1g_raw = price22k_10g_raw / 10;
-            const price22k_1g_change = (price22k_10g_raw - MOCK_BASE_PRICE_22K) / 10;
             currentRates['22k_1g'] = price22k_1g_raw;
-
             const element22k1g = document.getElementById('price-22k-1g');
             const element22k10g = document.getElementById('price-22k-10g');
-            const element22kChange = document.getElementById('change-22k');
-
             if (element22k1g) element22k1g.textContent = formatCurrency(price22k_1g_raw);
             if (element22k10g) element22k10g.textContent = formatCurrency(price22k_10g_raw);
-            if (element22kChange) element22kChange.innerHTML = formatChange(price22k_1g_change);
 
-            // Calculate and store other carat rates
-            const p24k = currentRates['24k_1g'];
-            currentRates['18k_1g'] = p24k * CARAT_PURITY_MAP[18];
-            currentRates['14k_1g'] = p24k * CARAT_PURITY_MAP[14];
+            currentRates['18k_1g'] = currentRates['24k_1g'] * CARAT_PURITY_MAP[18];
+            currentRates['14k_1g'] = currentRates['24k_1g'] * CARAT_PURITY_MAP[14];
 
-            // Silver Calculations
-            const changeSilverPercent = MOCK_OVERVIEW_CHANGE['silver'];
-            const priceSilver_1g_raw = MOCK_BASE_PRICE_SILVER * (1 + changeSilverPercent / 100);
+            const priceSilver_1g_raw = MOCK_BASE_PRICE_SILVER * (1 + MOCK_OVERVIEW_CHANGE['silver'] / 100);
             const priceSilver_1kg_raw = priceSilver_1g_raw * 1000;
-            const priceSilver_1g_change = (priceSilver_1g_raw - MOCK_BASE_PRICE_SILVER);
-
             const elementSilver1g = document.getElementById('price-silver-1g');
             const elementSilver1kg = document.getElementById('price-silver-1kg');
-            const elementSilverChange = document.getElementById('change-silver');
-
             if (elementSilver1g) elementSilver1g.textContent = formatCurrency(priceSilver_1g_raw);
             if (elementSilver1kg) elementSilver1kg.textContent = formatCurrency(priceSilver_1kg_raw);
-            if (elementSilverChange) elementSilverChange.innerHTML = formatChange(priceSilver_1g_change);
+            
+            calculatePrice(); 
         }
 
-        /**
-         * Renders the historical price chart using Chart.js.
-         */
+        /** Renders the historical price chart using Chart.js. */
         function renderHistoricalChart() {
             const chartCanvas = document.getElementById('historicalChart');
-            if (!chartCanvas) return; // Only run if the element is present
-
-            generateMockHistoricalData(); // Generate data first
+            if (!chartCanvas) return;
+            generateMockHistoricalData(); 
             const ctx = chartCanvas.getContext('2d');
-            
-            // Check if chart already exists to prevent duplication on tab switch
             if (chartCanvas.chartInstance) {
                 chartCanvas.chartInstance.destroy();
             }
@@ -397,28 +416,17 @@
                         pointBackgroundColor: 'rgb(202, 138, 4)',
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, title: { display: false } },
-                    scales: {
-                        y: { title: { display: true, text: 'Price in INR (₹)', font: { size: 14 } }, beginAtZero: false, grid: { color: 'rgba(0,0,0,0.05)' } },
-                        x: { title: { display: true, text: 'Last 30 Days', font: { size: 14 } }, grid: { display: false } }
-                    }
-                }
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, title: { display: false } }, scales: { y: { title: { display: true, text: 'Price in INR (₹)', font: { size: 14 } }, beginAtZero: false, grid: { color: 'rgba(0,0,0,0.05)' } }, x: { title: { display: true, text: 'Last 30 Days', font: { size: 14 } }, grid: { display: false } } } }
             };
 
             chartCanvas.chartInstance = new Chart(ctx, chartConfig);
         }
 
-        /**
-         * Calculates the estimated price based on user inputs.
-         */
+        /** Calculates the estimated price based on user inputs. */
         function calculatePrice() {
             const weightInput = document.getElementById('weight-input');
             const caratSelect = document.getElementById('carat-select');
             const resultElement = document.getElementById('final-price');
-
             if (!weightInput || !caratSelect || !resultElement) return;
 
             const weight = parseFloat(weightInput.value);
@@ -449,7 +457,6 @@
             if (ratePerGram === 0) {
                 resultElement.textContent = 'Data Error';
                 resultElement.classList.add('text-red-600');
-                console.error("Rate per gram is zero. Check currentRates object.");
                 return;
             }
 
@@ -457,9 +464,7 @@
             resultElement.textContent = formatCurrency(Math.round(totalPrice));
         }
 
-        /**
-         * Updates the time display.
-         */
+        /** Updates the time display. */
         function updateTime() {
             const now = new Date();
             const timeString = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' IST';
@@ -470,56 +475,44 @@
             }
         }
 
-        // --- TABBED NAVIGATION LOGIC ---
-
+        /** TABBED NAVIGATION LOGIC */
         function showTab(tabId, button) {
-            // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.add('hidden');
             });
-
-            // Deactivate all buttons
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active');
             });
 
-            // Show the selected tab content
             const selectedContent = document.getElementById(tabId);
             if (selectedContent) {
                 selectedContent.classList.remove('hidden');
             }
             
-            // Activate the clicked button
             if (button) {
                 button.classList.add('active');
             }
 
-            // Specific initialization logic for certain tabs
             if (tabId === 'commodities') {
-                // Rerender chart when Commodities tab is opened to handle potential canvas resize issues
                 renderHistoricalChart();
             }
         }
 
+        /** GEMINI API INTEGRATION for Commodity Analysis ONLY */
 
-        // --- GEMINI API INTEGRATION for all Analysis Sections ---
-
-        /**
-         * Displays the generated text and sources in the analysis container.
-         * @param {string} containerId - The ID prefix of the container elements (e.g., 'commodity-analysis')
-         * @param {Object} data - Contains text and an array of sources.
-         */
+        /** Displays the generated text and sources in the analysis container. */
         function updateAnalysisUI(containerId, data) {
             const analysisTextElement = document.getElementById(`${containerId}-text`);
             const analysisSourcesElement = document.getElementById(`${containerId}-sources`);
             const loader = document.getElementById(`${containerId}-loader`);
-            const button = document.querySelector(`#${containerId}-container`).previousElementSibling; // Button is the sibling above the container
+            const button = document.getElementById(`${containerId}-btn`); 
 
             loader.classList.add('hidden');
             if (button) {
                 button.disabled = false;
-                button.textContent = `Get Latest ${containerId.split('-')[0].charAt(0).toUpperCase() + containerId.split('-')[0].slice(1)} Data`;
+                button.textContent = 'Get Latest Price Drivers & Outlook';
             }
+            
             analysisTextElement.classList.remove('text-center', 'italic', 'text-gray-500', 'text-red-600');
             analysisTextElement.classList.add('text-left');
 
@@ -530,19 +523,40 @@
                 return;
             }
 
-            // Display the generated text
-            // Replace markdown-style lists/headings with HTML for better formatting
+            // Display the generated text and format markdown lists/headings
             let formattedText = data.text;
             formattedText = formattedText.replace(/### (.*)/g, '<h4 class="text-lg font-semibold mt-4 mb-2">$1</h4>');
             formattedText = formattedText.replace(/## (.*)/g, '<h3 class="text-xl font-bold mt-5 mb-3">$1</h3>');
-            formattedText = formattedText.replace(/\* (.*)/g, '<li>$1</li>');
-            formattedText = formattedText.replace(/\n\s*<li>/g, '<ul><li>').replace(/<\/li>\s*\n/g, '</li></ul>').replace(/<\/ul><ul>/g, '');
+            
+            let htmlList = '';
+            const lines = formattedText.split('\n');
+            let inList = false;
 
-
-            analysisTextElement.innerHTML = formattedText;
+            for (const line of lines) {
+                if (line.trim().startsWith('* ') || line.trim().startsWith('- ')) {
+                    const listItemContent = line.replace(/^\s*[\*\-]\s*/, '').trim();
+                    if (!inList) {
+                        htmlList += '<ul>';
+                        inList = true;
+                    }
+                    htmlList += `<li>${listItemContent}</li>`;
+                } else {
+                    if (inList) {
+                        htmlList += '</ul>';
+                        inList = false;
+                    }
+                    if (line.trim()) {
+                        htmlList += `<p>${line}</p>`;
+                    }
+                }
+            }
+            if (inList) {
+                htmlList += '</ul>';
+            }
+            analysisTextElement.innerHTML = htmlList || formattedText;
             analysisTextElement.classList.remove('text-center');
 
-            // Display the sources if they exist
+            // Display the sources
             if (data.sources && data.sources.length > 0) {
                 const sourceList = data.sources.map((source, index) =>
                     `<li class="hover:text-teal-700">
@@ -561,32 +575,26 @@
             }
         }
 
-        /**
-         * Fetches a grounded analysis summary using the Gemini API.
-         * @param {string} containerId - The ID prefix of the container elements (e.g., 'commodity-analysis')
-         * @param {string} systemPrompt - The system instruction to guide the model's persona.
-         * @param {string} userQuery - The specific query for the model.
-         * @param {HTMLElement} buttonElement - The button that triggered the function, for dynamic text update.
-         */
-        async function fetchMarketAnalysis(containerId, systemPrompt, userQuery, buttonElement) {
+        /** Fetches a grounded analysis summary using the Gemini API. */
+        async function fetchMarketAnalysis(containerId, systemPrompt, userQuery) {
             const loader = document.getElementById(`${containerId}-loader`);
             const analysisTextElement = document.getElementById(`${containerId}-text`);
+            const button = document.getElementById(`${containerId}-btn`);
 
             // Reset UI and show loading state
             analysisTextElement.innerHTML = '';
             document.getElementById(`${containerId}-sources`).innerHTML = '';
             loader.classList.remove('hidden');
-            buttonElement.disabled = true;
-            buttonElement.textContent = 'Analyzing and Fetching Data...';
+            button.disabled = true;
+            button.textContent = 'Analyzing and Fetching Data...';
 
-            // NOTE: The API key is left as an empty string and will be provided by the runtime environment.
             const apiKey = ""; 
             const model = 'gemini-2.5-flash-preview-09-2025';
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
             const payload = {
                 contents: [{ parts: [{ text: userQuery }] }],
-                tools: [{ "google_search": {} }], // Enable Google Search grounding
+                tools: [{ "google_search": {} }], 
                 systemInstruction: {
                     parts: [{ text: systemPrompt }]
                 },
@@ -612,8 +620,6 @@
 
                     if (candidate && candidate.content?.parts?.[0]?.text) {
                         result.text = candidate.content.parts[0].text;
-
-                        // Extract grounding sources
                         const groundingMetadata = candidate.groundingMetadata;
                         if (groundingMetadata && groundingMetadata.groundingAttributions) {
                             result.sources = groundingMetadata.groundingAttributions
@@ -623,13 +629,11 @@
                                 }))
                                 .filter(source => source.uri && source.title);
                         }
-                        // Success, break retry loop
                         break;
                     } else {
                         throw new Error("Invalid response structure from API.");
                     }
                 } catch (error) {
-                    console.error(`Attempt ${attempt + 1} failed:`, error);
                     result.error = "Could not connect to the analysis service.";
                     if (attempt < maxRetries - 1) {
                         await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
@@ -642,28 +646,40 @@
             updateAnalysisUI(containerId, result);
         }
 
-
         // --- Initialization ---
         window.onload = function() {
-            // Initial setup for the Commodities tab (since it's the default view)
+            // Placeholder functionality for the editable divs to show instructions when empty
+            document.querySelectorAll('.manual-output').forEach(el => {
+                const placeholder = el.getAttribute('data-placeholder');
+                if (el.innerHTML.trim() === '') {
+                    el.innerHTML = `<p class='text-gray-400 italic'>${placeholder}</p>`;
+                }
+                
+                // Event listeners to handle placeholder logic on user interaction
+                el.addEventListener('focus', () => {
+                    if (el.querySelector('.text-gray-400')) {
+                        el.innerHTML = '';
+                    }
+                });
+                el.addEventListener('blur', () => {
+                    if (el.innerHTML.trim() === '' || el.innerHTML.trim() === '<br>') {
+                        el.innerHTML = `<p class='text-gray-400 italic'>${placeholder}</p>`;
+                    }
+                });
+            });
+
             renderOverview();
             renderHistoricalChart();
-            
-            // Initial time update and set interval for real-time clock
             updateTime();
             setInterval(updateTime, 1000);
 
-            // Calculate default price on load
-            calculatePrice();
-
-            // Attach event listeners for the calculator (only on the commodities tab)
             const weightInput = document.getElementById('weight-input');
             const caratSelect = document.getElementById('carat-select');
             if (weightInput) weightInput.addEventListener('input', calculatePrice);
             if (caratSelect) caratSelect.addEventListener('change', calculatePrice);
 
-            // Ensure the first tab is active on load
-            document.querySelector('.tab-button').classList.add('active');
+            const firstTabButton = document.querySelector('.tab-button');
+            if(firstTabButton) firstTabButton.classList.add('active');
         };
     </script>
 </body>
