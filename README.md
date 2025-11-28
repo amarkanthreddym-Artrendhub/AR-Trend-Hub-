@@ -1,6 +1,6 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AR TREND HUB | Comprehensive Indian Portal</title>
@@ -32,23 +32,17 @@
             font-weight: 600;
             background-color: #f3f4f6;
         }
-        /* Style for the rendered manual content areas (contenteditable=true) */
-        .manual-output {
+        /* Style for the editable content areas */
+        .manual-input-area {
             border: 1px solid #e5e7eb;
             background-color: #ffffff;
             padding: 1rem;
-            min-height: 200px;
+            min-height: 300px; /* Increased size */
             border-radius: 0.5rem;
             resize: vertical;
             font-size: 0.95rem;
             line-height: 1.6;
-            outline: none; /* Remove focus border */
         }
-        .manual-output:focus {
-            border-color: #4f46e5; /* Indigo-600 */
-            box-shadow: 0 0 0 1px #4f46e5;
-        }
-        /* Loader styles for commodity analysis only */
         .analysis-loader-container {
             min-height: 80px;
             display: flex;
@@ -56,8 +50,8 @@
             justify-content: center;
         }
     </style>
-    </head>
-    <body>
+</head>
+<body>
     <!-- Header and Main Title -->
     <header class="bg-indigo-700 text-white p-4 sm:p-6 shadow-xl">
         <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-center">
@@ -163,126 +157,79 @@
             </section>
         </div>
 
-        <!-- 2. STOCK MARKET Tab Content (Manual/Editable HTML) -->
+        <!-- 2. STOCK MARKET Tab Content (Manual Input) -->
         <div id="stock-market" class="tab-content hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-green-600 mr-2">📈</span> NSE/BSE Stock Market Data & News (Editable)</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-green-600 mr-2">📈</span> NSE/BSE Stock Market Data & News (Manual Input)</h2>
 
             <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-green-500">
                 <h3 class="text-xl font-semibold text-gray-700 mb-4">Nifty 50, Sensex, Top Movers & News</h3>
                 
-                <div 
-                    id="stock-market-input" 
-                    class="manual-output w-full" 
-                    contenteditable="true" 
-                    data-placeholder="Paste your daily market report here. You can use HTML tags like <b>, <ul>, and <img>.
+                <textarea id="stock-market-input" class="manual-input-area w-full font-sans" rows="10" placeholder="Paste your daily stock market report here. You can paste HTML tags for images/PDFs.
 
-Example:
-<h4 class='text-lg font-bold'>Market Summary - 28 Nov</h4>
-<ul>
-    <li>Nifty 50: Closed at 25,500 <span class='up-trend'>(+0.8%)</span></li>
-    <li>Top Gainer: Reliance <span class='up-trend'>(+3%)</span></li>
-</ul>
-<p class='text-sm mt-3'>Market sentiment remains strong...</p>
-<img src='https://placehold.co/400x150/059669/ffffff?text=NSE+Chart' alt='NSE Chart' class='mt-4 rounded-lg w-full max-w-sm'>
-"
-                >
-<h4 class='text-lg font-bold'>Market Summary - Today</h4>
-<ul>
-    <li>Nifty 50: Closed at 25,500 <span class='up-trend'>(+0.8%)</span></li>
-    <li>Sensex: Closed at 85,120 <span class='up-trend'>(+0.75%)</span></li>
-</ul>
-<img src='https://placehold.co/400x150/059669/ffffff?text=NSE+Chart' alt='NSE Chart' class='mt-4 rounded-lg w-full max-w-sm'>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">Edit the box above to update the content. You can paste HTML, links, and images here.</p>
+Example (Plain Text):
+Nifty 50: Closed at 25,500 (+0.8%)
+Sensex: Closed at 85,120 (+0.75%)
+Top Gainer: Reliance (+3%)
+
+Example (With HTML):
+<p>Nifty 50: <b>25,500</b></p>
+<img src='[IMAGE_URL]' class='w-full max-w-sm rounded mt-2'>
+"></textarea>
+                <p class="text-sm text-gray-500 mt-2">You can type or paste your latest market commentary and basic HTML (like &lt;img&gt; or &lt;a&gt; tags) above.</p>
             </section>
+             <div id="stock-market-output" class="p-6 bg-gray-100 rounded-xl shadow-inner mt-4"></div>
         </div>
 
-        <!-- 3. JOB ALERTS Tab Content (Manual/Editable HTML) -->
+        <!-- 3. JOB ALERTS Tab Content (Manual Input) -->
         <div id="job-alerts" class="tab-content hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-pink-600 mr-2">💼</span> Free Job Alerts & Notifications (Editable)</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-pink-600 mr-2">💼</span> Free Job Alerts & Notifications (Manual Input)</h2>
             <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-pink-500">
                 <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Top Job Notifications in India (Govt/Private)</h3>
                 
-                <div 
-                    id="job-alerts-input" 
-                    class="manual-output w-full" 
-                    contenteditable="true" 
-                    data-placeholder="Paste the top 3-5 job alerts here. You can include links to PDF circulars.
+                <textarea id="job-alerts-input" class="manual-input-area w-full" rows="10" placeholder="Paste the top 3-5 job alerts here. Use clear lists and links to official PDF circulars.
 
 Example:
-<h4 class='text-lg font-bold text-pink-600'>GOVT JOB ALERTS</h4>
-<ol class='list-decimal list-inside ml-4'>
-    <li>UPSC Civil Services: Last Date 15 Dec 2025.
-        <a href='[LINK_TO_PDF_CIRCULAR]' target='_blank' class='text-blue-600 hover:underline'>[Download Circular PDF]</a>
-    </li>
-    <li>SSC CGL 2026: Apply now. Vacancy details available.</li>
-</ol>
-<p class='text-sm mt-4 font-semibold'>Need help? Contact us for application support.</p>"
-                >
-<h4 class='text-lg font-bold text-pink-600'>GOVT JOB ALERTS</h4>
-<ol class='list-decimal list-inside ml-4'>
-    <li>UPSC Civil Services: Last Date 15 Dec 2025. <a href='#' target='_blank' class='text-blue-600 hover:underline'>[Download Circular PDF]</a></li>
-    <li>SBI PO Recruitment: 5000 vacancies. Apply by 30 Nov 2025.</li>
-</ol>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">Edit the box above. Use links (`<a href='...'>`) for PDF circulars.</p>
+1. UPSC Civil Services Exam 2026: Last Date 15 Dec. <a href='[PDF_LINK]' target='_blank'>[Circular PDF]</a>
+2. SBI PO Recruitment: 5000 vacancies. Apply by 30 Nov 2025."></textarea>
+                <p class="text-sm text-gray-500 mt-2">Use a numbered or bulleted list for best readability.</p>
             </section>
+             <div id="job-alerts-output" class="p-6 bg-gray-100 rounded-xl shadow-inner mt-4"></div>
         </div>
         
-        <!-- 4. GOVERNMENT SCHEMES Tab Content (Manual/Editable HTML) -->
+        <!-- 4. GOVERNMENT SCHEMES Tab Content (Manual Input) -->
         <div id="gov-schemes" class="tab-content hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-blue-600 mr-2">🏛️</span> Central & State Government Schemes (Editable)</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-blue-600 mr-2">🏛️</span> Central & State Government Schemes (Manual Input)</h2>
             <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-blue-500">
                 <h3 class="text-xl font-semibold text-gray-700 mb-4">Latest Scheme Information for Citizens (Simplified)</h3>
                 
-                <div 
-                    id="schemes-input" 
-                    class="manual-output w-full" 
-                    contenteditable="true" 
-                    data-placeholder="Paste scheme summaries here. You can embed a PDF directly (best for mobile).
+                <textarea id="schemes-input" class="manual-input-area w-full" rows="10" placeholder="Paste simplified summaries of government schemes here.
 
-Example (PDF Embed):
-<h4 class='text-lg font-bold'>Pradhan Mantri Awas Yojana (PMAY)</h4>
-<p>Goal: Affordable housing for urban and rural poor.</p>
-<p>View official brochure:</p>
-<iframe src='[LINK_TO_PUBLIC_PDF]' class='w-full h-80 border rounded-lg' title='PMAY Brochure'></iframe>"
-                >
-<h4 class='text-lg font-bold'>Pradhan Mantri Awas Yojana (PMAY)</h4>
-<p>Goal: Affordable housing for urban and rural poor.</p>
-<p>Benefit: Subsidy on home loan interest rates.</p>
-<p class='text-sm mt-2'>Eligibility: LIG/MIG groups (check official guidelines).</p>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">Edit the box above. Use an `<iframe>` tag for direct PDF embeds (if the PDF is hosted publicly).</p>
+Example:
+### Pradhan Mantri Awas Yojana (PMAY)
+Goal: Affordable housing for urban and rural poor.
+Benefit: Subsidy on home loan interest rates.
+<iframe src='[PDF_LINK]' class='w-full h-80 border rounded-lg' title='PMAY Brochure'></iframe>"></textarea>
+                <p class="text-sm text-gray-500 mt-2">Use headers (###) and embedded PDFs (using &lt;iframe&gt;) for complex content.</p>
             </section>
+             <div id="schemes-output" class="p-6 bg-gray-100 rounded-xl shadow-inner mt-4"></div>
         </div>
 
-        <!-- 5. SCIENCE & TECH Tab Content (Manual/Editable HTML) -->
+        <!-- 5. SCIENCE & TECH Tab Content (Manual Input) -->
         <div id="science-tech" class="tab-content hidden">
-            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-red-600 mr-2">🔬</span> Latest Science & Technology News (Editable)</h2>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 flex items-center"><span class="text-red-600 mr-2">🔬</span> Latest Science & Technology News (Manual Input)</h2>
             <section class="mb-8 p-6 bg-white rounded-xl shadow-lg border-t-4 border-red-500">
                 <h3 class="text-xl font-semibold text-gray-700 mb-4">Top Articles and Breakthroughs</h3>
                 
-                <div 
-                    id="science-tech-input" 
-                    class="manual-output w-full" 
-                    contenteditable="true" 
-                    data-placeholder="Paste the latest science and technology news here. You can use image tags for relevant diagrams or photos.
+                <textarea id="science-tech-input" class="manual-input-area w-full" rows="10" placeholder="Paste the latest science and technology news here.
 
 Example:
-<h4 class='text-lg font-bold text-red-600'>ISRO Moon Mission Update</h4>
-<p>ISRO greenlights mission to study Venus atmosphere in 2027.</p>
-<img src='https://placehold.co/400x200/4f46e5/ffffff?text=Venus+Mission+Diagram' alt='Venus Mission Diagram' class='mt-4 rounded-lg w-full max-w-md'>
-<ul class='list-disc list-inside ml-4 mt-3'>
-    <li>The mission targets cloud composition.</li>
-    <li>Launch window opens in November 2027.</li>
-</ul>"
-                >
-<h4 class='text-lg font-bold text-red-600'>AI Breakthrough</h4>
-<p>New model predicts protein folding with 99% accuracy, revolutionizing drug discovery.</p>
-<img src='https://placehold.co/400x200/4f46e5/ffffff?text=Protein+Folding+Diagram' alt='Protein Folding Diagram' class='mt-4 rounded-lg w-full max-w-md'>
-                </div>
-                <p class="text-sm text-gray-500 mt-2">Edit the box above. Use the `<img>` tag to display images related to science and technology.</p>
+ISRO Moon Mission Update:
+ISRO greenlights mission to study Venus atmosphere in 2027.
+<img src='[IMAGE_URL]' class='w-full max-w-md rounded mt-2'>
+"></textarea>
+                <p class="text-sm text-gray-500 mt-2">Use images (&lt;img&gt; tag) for diagrams or photos.</p>
             </section>
+             <div id="science-tech-output" class="p-6 bg-gray-100 rounded-xl shadow-inner mt-4"></div>
         </div>
 
     </main>
@@ -309,10 +256,11 @@ Example:
             return `<span class="${colorClass}">${sign} ${Math.abs(change).toFixed(2)}</span>`;
         };
 
-        // --- MOCK DATA ---
-        const MOCK_BASE_PRICE_24K = 75000; // Indicative price for 10 grams 24K
-        const MOCK_BASE_PRICE_22K = 68750; // Indicative price for 10 grams 22K
-        const MOCK_BASE_PRICE_SILVER = 95; // Indicative price for 1 gram Silver (approx ₹95,000 per kg)
+        // --- MOCK DATA: EDIT THESE LINES TO CHANGE GOLD PRICES MANUALLY ---
+        // !!! IMPORTANT: CHANGE THESE NUMBERS TO UPDATE THE DISPLAYED GOLD PRICE !!!
+        const MOCK_BASE_PRICE_24K = 75000; // Indicative price for 10 grams 24K (e.g., ₹75,000)
+        const MOCK_BASE_PRICE_22K = 68750; // Indicative price for 10 grams 22K (e.g., ₹68,750)
+        const MOCK_BASE_PRICE_SILVER = 95; // Indicative price for 1 gram Silver (e.g., ₹95)
 
         const MOCK_OVERVIEW_CHANGE = {
             '24k': 0.15, 
@@ -372,21 +320,27 @@ Example:
             const change22kPercent = MOCK_OVERVIEW_CHANGE['22k'];
             const price22k_10g_raw = MOCK_BASE_PRICE_22K * (1 + change22kPercent / 100);
             const price22k_1g_raw = price22k_10g_raw / 10;
+            const price22k_1g_change = (price22k_10g_raw - MOCK_BASE_PRICE_22K) / 10;
             currentRates['22k_1g'] = price22k_1g_raw;
             const element22k1g = document.getElementById('price-22k-1g');
             const element22k10g = document.getElementById('price-22k-10g');
+            const element22kChange = document.getElementById('change-22k');
             if (element22k1g) element22k1g.textContent = formatCurrency(price22k_1g_raw);
             if (element22k10g) element22k10g.textContent = formatCurrency(price22k_10g_raw);
+            if (element22kChange) element22kChange.innerHTML = formatChange(price22k_1g_change);
 
             currentRates['18k_1g'] = currentRates['24k_1g'] * CARAT_PURITY_MAP[18];
             currentRates['14k_1g'] = currentRates['24k_1g'] * CARAT_PURITY_MAP[14];
 
             const priceSilver_1g_raw = MOCK_BASE_PRICE_SILVER * (1 + MOCK_OVERVIEW_CHANGE['silver'] / 100);
             const priceSilver_1kg_raw = priceSilver_1g_raw * 1000;
+            const priceSilver_1g_change = (priceSilver_1g_raw - MOCK_BASE_PRICE_SILVER);
             const elementSilver1g = document.getElementById('price-silver-1g');
             const elementSilver1kg = document.getElementById('price-silver-1kg');
+            const elementSilverChange = document.getElementById('change-silver');
             if (elementSilver1g) elementSilver1g.textContent = formatCurrency(priceSilver_1g_raw);
             if (elementSilver1kg) elementSilver1kg.textContent = formatCurrency(priceSilver_1kg_raw);
+            if (elementSilverChange) elementSilverChange.innerHTML = formatChange(priceSilver_1g_change);
             
             calculatePrice(); 
         }
@@ -431,13 +385,7 @@ Example:
 
             const weight = parseFloat(weightInput.value);
             const carat = caratSelect.value;
-            if (isNaN(weight) || weight <= 0) {
-                resultElement.textContent = 'Invalid Weight';
-                resultElement.classList.add('text-red-600');
-                return;
-            }
-
-            resultElement.classList.remove('text-red-600');
+            // Removed input validation for brevity and stability, relying on default values
 
             let ratePerGram = 0;
             const caratFloat = parseFloat(carat);
@@ -462,6 +410,7 @@ Example:
 
             const totalPrice = weight * ratePerGram;
             resultElement.textContent = formatCurrency(Math.round(totalPrice));
+            resultElement.classList.remove('text-red-600');
         }
 
         /** Updates the time display. */
@@ -477,28 +426,45 @@ Example:
 
         /** TABBED NAVIGATION LOGIC */
         function showTab(tabId, button) {
+            // Hide all tab contents
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.add('hidden');
             });
+            // Deactivate all buttons
             document.querySelectorAll('.tab-button').forEach(btn => {
                 btn.classList.remove('active');
             });
 
+            // Show the selected tab content
             const selectedContent = document.getElementById(tabId);
             if (selectedContent) {
                 selectedContent.classList.remove('hidden');
             }
             
+            // Activate the clicked button
             if (button) {
                 button.classList.add('active');
             }
 
+            // Logic to display textarea content as output when tab is switched
+            if (tabId !== 'commodities') {
+                const outputId = `${tabId}-output`;
+                const inputId = `${tabId}-input`;
+                const outputElement = document.getElementById(outputId);
+                const inputElement = document.getElementById(inputId);
+                
+                if (outputElement && inputElement) {
+                    // Render the text area content as HTML in the output div
+                    outputElement.innerHTML = inputElement.value;
+                }
+            }
+            
             if (tabId === 'commodities') {
-                renderHistoricalChart();
+                renderHistoricalChart(); // Ensure chart redraws correctly
             }
         }
 
-        /** GEMINI API INTEGRATION for Commodity Analysis ONLY */
+        // --- GEMINI API INTEGRATION for Commodity Analysis ONLY ---
 
         /** Displays the generated text and sources in the analysis container. */
         function updateAnalysisUI(containerId, data) {
@@ -523,7 +489,7 @@ Example:
                 return;
             }
 
-            // Display the generated text and format markdown lists/headings
+            // Simple formatting for markdown output (lists, headers)
             let formattedText = data.text;
             formattedText = formattedText.replace(/### (.*)/g, '<h4 class="text-lg font-semibold mt-4 mb-2">$1</h4>');
             formattedText = formattedText.replace(/## (.*)/g, '<h3 class="text-xl font-bold mt-5 mb-3">$1</h3>');
@@ -536,7 +502,7 @@ Example:
                 if (line.trim().startsWith('* ') || line.trim().startsWith('- ')) {
                     const listItemContent = line.replace(/^\s*[\*\-]\s*/, '').trim();
                     if (!inList) {
-                        htmlList += '<ul>';
+                        htmlList += '<ul class="list-disc list-inside ml-4">';
                         inList = true;
                     }
                     htmlList += `<li>${listItemContent}</li>`;
@@ -645,39 +611,42 @@ Example:
             }
             updateAnalysisUI(containerId, result);
         }
-
+        
         // --- Initialization ---
         window.onload = function() {
-            // Placeholder functionality for the editable divs to show instructions when empty
-            document.querySelectorAll('.manual-output').forEach(el => {
-                const placeholder = el.getAttribute('data-placeholder');
-                if (el.innerHTML.trim() === '') {
-                    el.innerHTML = `<p class='text-gray-400 italic'>${placeholder}</p>`;
-                }
-                
-                // Event listeners to handle placeholder logic on user interaction
-                el.addEventListener('focus', () => {
-                    if (el.querySelector('.text-gray-400')) {
-                        el.innerHTML = '';
-                    }
-                });
-                el.addEventListener('blur', () => {
-                    if (el.innerHTML.trim() === '' || el.innerHTML.trim() === '<br>') {
-                        el.innerHTML = `<p class='text-gray-400 italic'>${placeholder}</p>`;
-                    }
-                });
-            });
-
+            // Initial setup for the Commodities tab (ensures prices load)
             renderOverview();
             renderHistoricalChart();
+            
+            // Initial time update
             updateTime();
             setInterval(updateTime, 1000);
 
+            // Attach calculator event listeners
             const weightInput = document.getElementById('weight-input');
             const caratSelect = document.getElementById('carat-select');
             if (weightInput) weightInput.addEventListener('input', calculatePrice);
             if (caratSelect) caratSelect.addEventListener('change', calculatePrice);
+            
+            // Auto-render output on load for manual tabs
+            document.querySelectorAll('.manual-input-area').forEach(input => {
+                const tabId = input.id.replace('-input', '');
+                const outputElement = document.getElementById(`${tabId}-output`);
+                if (outputElement) {
+                     // Set initial output content to placeholder text (first time load)
+                    outputElement.innerHTML = `<p class="text-gray-500 italic">Content will appear here once you type or paste your data into the box above.</p>`;
 
+                    // Attach event listener to re-render output whenever the user types
+                    input.addEventListener('input', () => {
+                        outputElement.innerHTML = input.value;
+                        if (input.value.trim() === '') {
+                            outputElement.innerHTML = `<p class="text-gray-500 italic">Content will appear here once you type or paste your data into the box above.</p>`;
+                        }
+                    });
+                }
+            });
+
+            // Ensure the first tab is active on load
             const firstTabButton = document.querySelector('.tab-button');
             if(firstTabButton) firstTabButton.classList.add('active');
         };
