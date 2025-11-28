@@ -349,7 +349,7 @@ ISRO greenlights mission to study Venus atmosphere in 2027.
         function renderHistoricalChart() {
             const chartCanvas = document.getElementById('historicalChart');
             if (!chartCanvas) return;
- const MOCK_BASE_PRICE_24K = 75000; 
+            const MOCK_BASE_PRICE_24K = 75000; 
 const MOCK_BASE_PRICE_22K = 68750;
 const MOCK_BASE_PRICE_SILVER = 95;
 3.  **Manual Data Input (Working):**
