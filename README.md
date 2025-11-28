@@ -349,7 +349,15 @@ ISRO greenlights mission to study Venus atmosphere in 2027.
         function renderHistoricalChart() {
             const chartCanvas = document.getElementById('historicalChart');
             if (!chartCanvas) return;
-            generateMockHistoricalData(); 
+ const MOCK_BASE_PRICE_24K = 75000; 
+const MOCK_BASE_PRICE_22K = 68750;
+const MOCK_BASE_PRICE_SILVER = 95;
+3.  **Manual Data Input (Working):**
+* Go to any tab other than "Commodities" (e.g., "Job Alerts").
+* You will see a large **input box (`<textarea>`)** at the top and a **preview area (`<div id="...-output">`)** below it.
+* **Type or paste your text (including HTML, images, and PDFs) into the input box.** The preview area immediately below will show the rendered result. This allows you to check your formatting instantly.
+* When you deploy, the visible content will be whatever you left in the input box.
+*            generateMockHistoricalData(); 
             const ctx = chartCanvas.getContext('2d');
             if (chartCanvas.chartInstance) {
                 chartCanvas.chartInstance.destroy();
