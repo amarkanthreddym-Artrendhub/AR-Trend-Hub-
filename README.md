@@ -298,7 +298,7 @@
     // Replace these with your real EarnKaro links mapping
     const affiliateMap = {
       'AMAZON_ICICI': 'https://earnkaro.example/amazon_icici',
-      'SBI_CASH': 'https://bitli.in/1dt8etW/sbi_cashback',
+      'SBI_CASH': 'https://earnkaro.example/sbi_cashback',
       'HDFC_MILL': 'https://earnkaro.example/hdfc_mill',
       'HEALTH_INS': 'https://earnkaro.example/health_ins',
       'TERM_LIFE': 'https://earnkaro.example/term_life'
