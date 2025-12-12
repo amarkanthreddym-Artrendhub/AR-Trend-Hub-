@@ -363,6 +363,20 @@
   </div>  <script>
     // Affiliate map: updated with SBI Cashback Card link with your EarnKaro profit links (exact link from partner page)
     const affiliateMap = {
+      'HDFC_LOAN': 'https://bitli.in/prewsE9',
+      'AXIS_IOCL': 'https://bitli.in/Hb6GU2a',
+      'AXIS_MYZ': 'https://bitli.in/i3MPJlA',
+      'SBI_CASH2': 'https://bitli.in/6Ps7pk2',
+      'HDFC_SWIGGY': 'https://bitli.in/G9i6ccO',
+      'AU_LIT': 'https://bitli.in/KowCF3G',
+      'IDFC_POWER_PLUS': 'https://bitli.in/A6G9Kg0',
+      'FIRSTCRY': 'https://bitli.in/wYaX1fj',
+      'AJIO2': 'https://ajiio.in/Ze2QgWu',
+      'TATACLIQ': 'https://bitli.in/sW72PQK',
+      'CROMA': 'https://bitli.in/3lfFpUn',
+      'RELIANCE_DIGITAL': 'https://bitli.in/c1P8Xa8',
+      'HDFC_TATANEU': 'https://bitli.in/Us03b52',
+      'RBL_IOCL': 'https://bitli.in/Kuev33G',
       'FLIPKART': 'https://fktr.in/2nwkemX',
       'JIOMART': 'https://bitli.in/1lVbAZs',
       'SBI_CASH': 'https://bitli.in/hy5v74T',
